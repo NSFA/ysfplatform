@@ -1,0 +1,15 @@
+@import "commom.scss";
+@import "layout.scss";
+
+.proxy_form {
+  width: 600px;
+}
+.proxy_switch {
+  color: #fff;
+  position: absolute;
+  right: 10px;
+  top: 20px;
+  >span {
+    padding-right: 20px;
+  }
+}
