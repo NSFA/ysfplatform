@@ -4,7 +4,7 @@ import Router from 'vue-router'
 //webpack 按需加载
 const Login = r => require.ensure([], () => r(require('../components/Login')), 'Login')
 const Main = r => require.ensure([], () => r(require('../components/Main')), 'Main')
-const terminal = r => require.ensure([], () => r(require('../components/anyproxy')), 'anyproxy')
+const anyproxy = r => require.ensure([], () => r(require('../components/anyproxy')), 'anyproxy')
 const dataHub = r => require.ensure([], () => r(require('../components/dataHub')), 'dataHub')
 const adminInfo = r => require.ensure([], () => r(require('../components/InfoTab/adminInfo')), 'adminInfo')
 const userInfo = r => require.ensure([], () => r(require('../components/InfoTab/userInfo')), 'userInfo')
@@ -34,7 +34,7 @@ export default new Router({
         },
         {
           path: 'anyproxy',
-          component: terminal
+          component: anyproxy
         },
         {
           path: 'dataHub',

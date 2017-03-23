@@ -1,8 +1,4 @@
 const mutations = {
-  SET_LOGIN_STATE(state, info){
-    state.username = info.username;
-    state.isLogin = info.isLogin;
-  },
   SET_ACTIVE_TAB(state, tab){
     state.activeTab = tab;
   },

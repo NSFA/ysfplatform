@@ -17,17 +17,12 @@
 </template>
 
 <script>
-  import {_getLocalStorage, _saveLocalStorage, _clearStorage}  from "../javascript/util";
+  import {_getLocalStorage, _saveLocalStorage, _clearStorage,_getCookie}  from "../javascript/util";
   import  {_login} from "../javascript/getData";
   import {mapState, mapMutations} from 'vuex';
 
   export default {
     name: "login",
-    computed: {
-      ...mapState([
-        "isLogin"
-      ])
-    },
     data() {
       return {
         loginForm: {
@@ -46,9 +41,6 @@
       };
     },
     methods: {
-      ...mapMutations([
-        "SET_LOGIN_STATE"
-      ]),
       submitForm(formName) {
         this.$refs[formName].validate((valid) => {
           if (valid) {
@@ -56,7 +48,6 @@
               let data = res.data;
               if (data.code === 200) {
                 this.loginForm.savePass && this.saveLoginInfo();
-                this.SET_LOGIN_STATE({isLogin: true, proxy_switch: data.proxy_switch});
                 this.$router.push('/');
               } else {
                 this.$message({
@@ -79,9 +70,8 @@
       }
     },
     mounted(){
-      if (this.isLogin) {
+      if (_getCookie('loginStatus')) {
         this.$router.push('/');
-        return;
       }
       if (_getLocalStorage("account") && _getLocalStorage("password")) {
         this.loginForm.account = _getLocalStorage("account");

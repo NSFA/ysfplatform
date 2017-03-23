@@ -21,6 +21,7 @@
 
 <script>
   import {mapState, mapMutations} from 'vuex';
+  import {_getCookie}  from "../javascript/util";
 
   export default {
     name: "pagination",
@@ -45,7 +46,9 @@
       }
     },
     mounted(){
-      if (!this.isLogin) this.$router.push('/login');
+      if (!_getCookie('loginStatus')) {
+        this.$router.push('/login');
+      }
     }
   }
 </script>
