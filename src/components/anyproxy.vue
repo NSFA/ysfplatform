@@ -8,16 +8,16 @@
       <div class="proxy_form">
         <el-form :model="proxy_form" :rules="rules" ref="proxy_form" label-width="200px">
           <el-form-item label="代理端口" prop="port">
-            <el-input v-model="proxy_form.port" type="number"></el-input>
+            <el-input v-model.number="proxy_form.port" type="number"></el-input>
           </el-form-item>
           <el-form-item label="AnyProxy端口" prop="anyproxy_port">
-            <el-input v-model="proxy_form.anyproxy_port" type="number"></el-input>
+            <el-input v-model.number="proxy_form.anyproxy_port" type="number"></el-input>
           </el-form-item>
           <el-form-item label="ForceProxyHttps" prop="forceProxyHttps">
             <el-switch on-text="" off-text="" v-model="proxy_form.forceProxyHttps"></el-switch>
           </el-form-item>
           <el-form-item label="限速值(默认不限速 kb/s)" prop="throttle">
-            <el-input v-model="proxy_form.throttle" type="number"></el-input>
+            <el-input v-model.number="proxy_form.throttle" type="number"></el-input>
           </el-form-item>
           <el-form-item>
             <el-button type="primary" @click="submitForm('proxy_form')" :disabled="loading">保存</el-button>
@@ -41,8 +41,8 @@
       return {
         loading: false,
         proxy_form: {
-          port: '',
-          anyproxy_port: '',
+          port: null,
+          anyproxy_port: null,
           forceProxyHttps: false,
           throttle: ''
         },

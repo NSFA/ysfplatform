@@ -9,7 +9,7 @@
       </el-form-item>
       <el-form-item label="记住密码" prop="savePass">
         <el-switch on-text="" off-text="" v-model="loginForm.savePass"></el-switch>
-        <el-button type="primary" size="large" @click="submitForm('loginForm')" style="margin-left: 40px">登录</el-button>
+        <el-button type="primary" size="large" @click="submitForm('loginForm')" @keyup.enter="submitForm('loginForm')" style="margin-left: 40px">登录</el-button>
         <el-button size="large" @click="resetForm('loginForm')">重置</el-button>
       </el-form-item>
     </el-form>
@@ -52,7 +52,7 @@
               } else {
                 this.$message({
                   showClose: true,
-                  message: data.result,
+                  message: data.msg,
                   type: 'error'
                 })
               }
@@ -70,7 +70,7 @@
       }
     },
     mounted(){
-      if (_getCookie('loginStatus')) {
+      if (_getCookie('login')) {
         this.$router.push('/');
       }
       if (_getLocalStorage("account") && _getLocalStorage("password")) {

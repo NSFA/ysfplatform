@@ -46,7 +46,7 @@
       }
     },
     mounted(){
-      if (!_getCookie('loginStatus')) {
+      if (!_getCookie('login')) {
         this.$router.push('/login');
       }
     }
