@@ -10,7 +10,7 @@
           <el-form-item label="代理端口" prop="port">
             <el-input v-model="proxy_form.port" type="number"></el-input>
           </el-form-item>
-          <el-form-item label="AnyProxy端口" prop="port">
+          <el-form-item label="AnyProxy端口" prop="anyproxy_port">
             <el-input v-model="proxy_form.anyproxy_port" type="number"></el-input>
           </el-form-item>
           <el-form-item label="ForceProxyHttps" prop="forceProxyHttps">
@@ -20,8 +20,8 @@
             <el-input v-model="proxy_form.throttle" type="number"></el-input>
           </el-form-item>
           <el-form-item>
-            <el-button type="primary" @click="submitForm('proxy_form')">保存</el-button>
-            <el-button @click="resetForm('proxy_form')">重置</el-button>
+            <el-button type="primary" @click="submitForm('proxy_form')" :disabled="loading">保存</el-button>
+            <el-button @click="resetForm('proxy_form')" :disabled="loading">重置</el-button>
           </el-form-item>
         </el-form>
       </div>
@@ -39,6 +39,7 @@
     },
     data() {
       return {
+        loading: false,
         proxy_form: {
           port: '',
           anyproxy_port: '',
@@ -59,10 +60,17 @@
       submitForm(formName) {
         this.$refs[formName].validate((valid) => {
           if (valid) {
-            alert('submit!');
-          } else {
-            console.log('error submit!!');
-            return false;
+            this.loading = true;
+            _setProxy(this.proxy_form).then((res) => {
+              this.loading = false;
+              let data = res.data;
+              this.$notify({
+                showClose: true,
+                message: data.msg,
+                type: data.code === 200 ? 'success' : 'error',
+                offset: 50
+              });
+            })
           }
         });
       },
