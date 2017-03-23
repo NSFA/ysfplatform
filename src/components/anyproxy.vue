@@ -2,15 +2,7 @@
   <div>
     <el-menu theme="dark" default-active="1" mode="horizontal">
       <el-menu-item index="1">AnyProxy设置</el-menu-item>
-      <div class="proxy_switch">
-        <span>服务器开启状态</span>
-        <el-switch
-          v-model="proxy_switch"
-          on-text="开启"
-          @change="switchChange"
-          off-text="关闭">
-        </el-switch>
-      </div>
+      <switchChange></switchChange>
     </el-menu>
     <div class="main_content">
       <div class="proxy_form">
@@ -39,10 +31,11 @@
 <script>
   import {_getProxy, _setProxy} from '../javascript/getData'
   import {mapState, mapMutations} from 'vuex'
+  import switchChange from './switchChange'
 
   export default {
-    computed: {
-      ...mapState(['proxy_switch'])
+    components: {
+      switchChange
     },
     data() {
       return {
@@ -63,10 +56,6 @@
       };
     },
     methods: {
-      ...mapMutations(['SET_PROXY_STATE']),
-      switchChange(){
-        this.SET_PROXY_STATE(!this.proxy_switch);
-      },
       submitForm(formName) {
         this.$refs[formName].validate((valid) => {
           if (valid) {

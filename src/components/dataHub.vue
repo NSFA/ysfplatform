@@ -19,15 +19,7 @@
       <router-link to="/dataHub/pictureInfo">
         <el-menu-item index="6">图片表</el-menu-item>
       </router-link>
-      <div class="proxy_switch">
-        <span>服务器开启状态</span>
-        <el-switch
-          v-model="proxy_switch"
-          on-text="开启"
-          @change="switchChange"
-          off-text="关闭">
-        </el-switch>
-      </div>
+      <switchChange></switchChange>
     </el-menu>
     <router-view class="main_content"></router-view>
   </div>
@@ -35,23 +27,22 @@
 
 <script>
   import {mapState, mapMutations} from 'vuex';
-
+  import switchChange from './switchChange'
   export default{
+    components: {
+      switchChange
+    },
     computed: {
       ...mapState({
         isLogin: "isLogin",
-        hubActiveTab: "hubActiveTab",
-        proxy_switch: "proxy_switch"
+        hubActiveTab: "hubActiveTab"
       }),
     },
     methods: {
-      ...mapMutations(["SET_DATA_ACTIVE_TAB", "SET_PROXY_STATE"]),
+      ...mapMutations(["SET_DATA_ACTIVE_TAB"]),
       setIndex(key, keypath){
         this.SET_DATA_ACTIVE_TAB(keypath[0])
-      },
-      switchChange(){
-        this.SET_PROXY_STATE(!this.proxy_switch);
-      },
-    }
+      }
+    },
   }
 </script>

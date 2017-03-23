@@ -7,6 +7,9 @@ const mutations = {
   },
   SET_PROXY_STATE(state, proxy){
     state.proxy_switch = proxy;
+  },
+  SET_INIT_INFO(state, info){
+    _.extend(state, info);
   }
 };
 

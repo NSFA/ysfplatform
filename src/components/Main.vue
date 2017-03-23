@@ -6,11 +6,21 @@
 </template>
 
 <script>
-  import pagination from './pagination.vue';
-
+  import pagination from './pagination.vue'
+  import {_getInfo} from '../javascript/getData'
+  import {mapMutations} from 'vuex'
   export default {
     components: {
       pagination
+    },
+    methods:{
+      ...mapMutations(['SET_INIT_INFO'])
+    },
+    mounted(){
+      _getInfo().then((res) => {
+        let data = res.data && res.data.result;
+        this.SET_INIT_INFO(data)
+      })
     }
   }
 </script>
