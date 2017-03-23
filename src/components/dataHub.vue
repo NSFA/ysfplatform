@@ -1,23 +1,11 @@
 <template>
   <div>
     <el-menu theme="dark" :default-active="hubActiveTab" mode="horizontal" @select="setIndex">
-      <router-link to="/dataHub/userInfo">
-        <el-menu-item index="1">客户信息</el-menu-item>
+      <router-link to="/dataHub/apiList">
+        <el-menu-item index="1">API列表</el-menu-item>
       </router-link>
       <router-link to="/dataHub/adminInfo">
-        <el-menu-item index="2">管理员信息</el-menu-item>
-      </router-link>
-      <router-link to="/dataHub/terminalInfo">
-        <el-menu-item index="3">终端信息</el-menu-item>
-      </router-link>
-      <router-link to="/dataHub/unknowInfo">
-        <el-menu-item index="4">未识别人员信息</el-menu-item>
-      </router-link>
-      <router-link to="/dataHub/analyzeInfo">
-        <el-menu-item index="5">分析结果</el-menu-item>
-      </router-link>
-      <router-link to="/dataHub/pictureInfo">
-        <el-menu-item index="6">图片表</el-menu-item>
+        <el-menu-item index="2">AnyProxy界面</el-menu-item>
       </router-link>
       <switchChange></switchChange>
     </el-menu>

@@ -7,12 +7,7 @@ const Main = r => require.ensure([], () => r(require('../components/Main')), 'Ma
 const anyproxy = r => require.ensure([], () => r(require('../components/anyproxy')), 'anyproxy')
 const dataHub = r => require.ensure([], () => r(require('../components/dataHub')), 'dataHub')
 const adminInfo = r => require.ensure([], () => r(require('../components/InfoTab/adminInfo')), 'adminInfo')
-const userInfo = r => require.ensure([], () => r(require('../components/InfoTab/userInfo')), 'userInfo')
-const terminalInfo = r => require.ensure([], () => r(require('../components/InfoTab/terminalInfo')), 'terminalInfo')
-const analyzeInfo = r => require.ensure([], () => r(require('../components/InfoTab/analyzeInfo')), 'analyzeInfo')
-const pictureInfo = r => require.ensure([], () => r(require('../components/InfoTab/pictureInfo')), 'pictureInfo')
-const unknowInfo = r => require.ensure([], () => r(require('../components/InfoTab/unknowInfo')), 'unknowInfo')
-
+const apiList = r => require.ensure([], () => r(require('../components/InfoTab/apiList')), 'apiList')
 
 Vue.use(Router);
 
@@ -42,32 +37,16 @@ export default new Router({
           children: [
             {
               path: '',
-              redirect: 'userInfo'
+              redirect: 'apiList'
             },
             {
-              path: 'userInfo',
-              component: userInfo,
+              path: 'apiList',
+              component: apiList,
             },
             {
               path: 'adminInfo',
               component: adminInfo
             },
-            {
-              path: 'terminalInfo',
-              component: terminalInfo
-            },
-            {
-              path: 'unknowInfo',
-              component: unknowInfo
-            },
-            {
-              path: 'analyzeInfo',
-              component: analyzeInfo
-            },
-            {
-              path: 'pictureInfo',
-              component: pictureInfo
-            }
           ]
         }
       ]

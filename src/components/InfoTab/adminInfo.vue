@@ -1,6 +1,6 @@
 <template>
   <div>
-    adminInfo
+    AnyProxy界面
   </div>
 </template>
 
