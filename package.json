@@ -13,6 +13,7 @@
     "element-ui": "^1.2.5",
     "jsoneditor": "^5.5.11",
     "lodash": "^4.17.4",
+    "moment": "^2.18.1",
     "normalize.css": "^5.0.0",
     "vue": "^2.2.2",
     "vue-router": "^2.2.0",

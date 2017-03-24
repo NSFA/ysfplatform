@@ -26,12 +26,12 @@
         prop="status"
         label="状态"
         width="100"
-        :filters="[{ text: '开启', value: '开启' }, { text: '关闭', value: '关闭' }]"
+        :filters="[{ text: '开启', value: true }, { text: '关闭', value: false }]"
         :filter-method="filterTag">
         <template scope="scope">
           <el-tag
-            :type="scope.row.status === '开启' ? 'primary' : 'warning'"
-            close-transition>{{scope.row.status}}
+            :type="scope.row.status === true ? 'primary' : 'warning'"
+            close-transition>{{scope.row.status === true ? "开启" :"关闭" }}
           </el-tag>
         </template>
       </el-table-column>
@@ -39,8 +39,8 @@
         label="操作"
         width="100">
         <template scope="scope">
-          <el-button @click="deleteClick(scope.row.pid)" type="text" size="small">移除</el-button>
-          <el-button @click="editClick(scope.row.pid)" type="text" size="small">编辑</el-button>
+          <el-button @click="deleteClick(scope.row._id)" type="text" size="small">移除</el-button>
+          <el-button @click="editClick(scope.row._id)" type="text" size="small">编辑</el-button>
         </template>
       </el-table-column>
     </el-table>
@@ -49,7 +49,8 @@
 
 <script>
   import editor from '../editor.vue'
-  import {_getApiList,_delApi} from '../../javascript/getData'
+  import {_getApiList, _delApi} from '../../javascript/getData'
+  import moment from 'moment'
   export default{
     components: {
       editor
@@ -66,13 +67,22 @@
       dialogOpen(){
         this.$nextTick(function () {
           this.$refs['editor'].$emit('openDialog');
+          this.$refs['editor'].$on('hideDialog', (res) => {
+            if (res.listchange) {
+              this.getListInfo();
+            }
+            this.dialogFormVisible = false;
+          });
         })
       },
       deleteClick(pid){
-        _delApi(pid).then((res)=>{
+        _delApi({id: pid}).then((res) => {
           const data = res.data, result = data.result;
           if (data.code === 200) {
-            this.tableData = _.filter(this.tableData, (item) => item.pid !== pid)
+            this.tableData = _.filter(this.tableData, (item) => item._id !== pid)
+            this.$notify.success({
+              message: "删除Api成功"
+            });
           } else {
             this.$notify.error({
               title: '错误',
@@ -82,19 +92,22 @@
         });
       },
       editClick(pid) {
-        this.dialog_id = +pid;
+        this.dialog_id = pid;
         this.dialogFormVisible = true;
       },
       filterTag(value, row) {
         return row.status === value;
       },
-      getList(){
+      getListInfo(){
         this.loading = true;
-        _getApiList.then((res) => {
+        _getApiList().then((res) => {
           this.loading = false;
           const data = res.data, result = data.result;
           if (data.code === 200) {
-            _.assign(this.tableData, result);
+            moment.locale('zh-cn');
+            this.tableData = _.forEach(result, (item) => {
+              item.date = moment(item.date).format('lll');
+            });
           } else {
             this.$notify.error({
               title: '错误',
@@ -105,7 +118,7 @@
       },
     },
     mounted(){
-//        this.getList();
+      this.getListInfo();
     }
   }
 </script>

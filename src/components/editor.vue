@@ -18,7 +18,7 @@
       <div class="json_editor" ref="json_editor"></div>
     </div>
     <div slot="footer" class="dialog-footer json_editor_group">
-      <el-button @click="dialogFormVisible = false">取 消</el-button>
+      <el-button @click="reset()">取 消</el-button>
       <el-button type="primary" @click="submitEditor()">确 定</el-button>
     </div>
   </div>
@@ -26,7 +26,7 @@
 <script>
   import JSONEditor from 'jsoneditor';
   import 'jsoneditor/dist/jsoneditor.css'
-  import {_getApi} from '../javascript/getData'
+  import {_getApi, _addApi} from '../javascript/getData'
   export default{
     name: 'jsoneditor',
     props: ['dialog_id'],
@@ -52,12 +52,32 @@
     },
     methods: {
       reset(){
-        this.editor.set({});
+        this.$emit("hideDialog",{"listchange":true});
       },
       submitEditor(){
-        const json = this.editor.get();
-        const formData = _.assign({json}, this.form);
-        this.$emit('getFormData', formData);
+        try {
+          var json = this.editor.get();
+        } catch (err) {
+          this.$notify.error({
+            title: "编辑错误",
+            message: err.toString()
+          });
+          return;
+        }
+        const formData = _.assign({json, id: this.dialog_id}, this.form);
+        _addApi(formData).then((res) => {
+          const data = res.data;
+          if (data.code === 200) {
+            this.$emit("hideDialog", {"listchange": true});
+            this.$notify.success({
+              message: '添加Api成功',
+            });
+          } else {
+            this.$notify.error({
+              message: data.msg
+            });
+          }
+        })
       },
       init(){
         this.editor.set(this.initData.json);
@@ -72,10 +92,11 @@
         if (this.dialog_id === -1) {
           this.init();
         } else {
-          _getApi.then((res) => {
+          _getApi(this.dialog_id).then((res) => {
             const data = res.data, result = data.result;
             if (data.code === 200) {
-              _.assign(this.form, result.form);
+              this.form.name = result.name;
+              this.form.status = result.status;
               this.editor.set(result.json);
             } else {
               this.$notify.error({
@@ -108,18 +129,22 @@
   .dialogForm_title {
     margin-bottom: 20px;
   }
+
   .dialogForm_body {
     width: 90%;
     margin: 0 auto;
     text-align: left;
+
   .el-form-item__label {
     text-align: center;
   }
+
   }
   .json_editor_group {
     text-align: center;
     padding-top: 20px;
   }
+
   .json_editor {
     height: 400px;
     width: 90%;
