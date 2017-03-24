@@ -52,7 +52,7 @@
     },
     methods: {
       reset(){
-        this.$emit("hideDialog",{"listchange":true});
+        this.$emit("hideDialog",{"listchange":false});
       },
       submitEditor(){
         try {
