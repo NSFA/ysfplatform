@@ -51,7 +51,11 @@
   import editor from '../editor.vue'
   import {_getApiList, _delApi} from '../../javascript/getData'
   import moment from 'moment'
+  import {mapState} from 'vuex'
   export default{
+    computed: {
+      ...mapState(['proxy_switch'])
+    },
     components: {
       editor
     },
@@ -76,6 +80,12 @@
         })
       },
       deleteClick(pid){
+        if (this.proxy_switch) {
+          this.$notify.warning({
+            message: "请关闭服务器后再进行操作"
+          });
+          return;
+        }
         _delApi({id: pid}).then((res) => {
           const data = res.data, result = data.result;
           if (data.code === 200) {
@@ -92,6 +102,12 @@
         });
       },
       editClick(pid) {
+        if (this.proxy_switch) {
+          this.$notify.warning({
+            message: "请关闭服务器后再进行操作"
+          });
+          return;
+        }
         this.dialog_id = pid;
         this.dialogFormVisible = true;
       },

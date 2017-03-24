@@ -34,6 +34,9 @@
   import switchChange from './switchChange'
 
   export default {
+    computed: {
+      ...mapState(['proxy_switch'])
+    },
     components: {
       switchChange
     },
@@ -58,6 +61,12 @@
     },
     methods: {
       submitForm(formName) {
+        if (this.proxy_switch) {
+          this.$notify.warning({
+            message: "请关闭服务器后再进行编辑"
+          });
+          return;
+        }
         this.$refs[formName].validate((valid) => {
           if (valid) {
             this.loading = true;
