@@ -24,7 +24,7 @@
           iframe.style.height = "100%";
           iframe.style.border = 0;
 //          ip 上线需更改为服务器ip, anyproxy 源码里也一样
-          iframe.src = `http://10.240.78.177:${perms.data.result.anyproxy_port}`;
+          iframe.src = `http://localhost:${perms.data.result.anyproxy_port}`;
           parent.appendChild(iframe);
         } else {
           parent.innerHTML = "服务器未开启"

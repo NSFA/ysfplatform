@@ -48,6 +48,7 @@
 </template>
 
 <script>
+  //TODO:有空再做个分页
   import editor from '../editor.vue'
   import {_getApiList, _delApi} from '../../javascript/getData'
   import moment from 'moment'
@@ -68,6 +69,10 @@
       }
     },
     methods: {
+      /**
+       * 模态框开启回调
+       * 监听editor事件
+       */
       dialogOpen(){
         this.$nextTick(function () {
           this.$refs['editor'].$emit('openDialog');
@@ -79,6 +84,10 @@
           });
         })
       },
+      /**
+       * 删除Api
+       * @param pid
+       */
       deleteClick(pid){
         if (this.proxy_switch) {
           this.$notify.warning({
@@ -101,6 +110,10 @@
           }
         });
       },
+      /**
+       * 编辑/新增Api
+       * @param pid
+       */
       editClick(pid) {
         if (this.proxy_switch) {
           this.$notify.warning({
@@ -111,9 +124,18 @@
         this.dialog_id = pid;
         this.dialogFormVisible = true;
       },
+      /**
+       * 筛选方法，详见Element
+       * @param value
+       * @param row
+       * @returns {boolean}
+       */
       filterTag(value, row) {
         return row.status === value;
       },
+      /**
+       * 获取列表信息
+       */
       getListInfo(){
         this.loading = true;
         _getApiList().then((res) => {
@@ -134,6 +156,9 @@
       },
     },
     mounted(){
+      /**
+       * 初始化列表信息
+       */
       this.getListInfo();
     }
   }

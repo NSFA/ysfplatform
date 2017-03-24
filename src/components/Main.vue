@@ -17,6 +17,9 @@
       ...mapMutations(['SET_INIT_INFO'])
     },
     mounted(){
+      /**
+       * 初始化服务器状态
+       */
       _getInfo().then((res) => {
         let data = res.data && res.data.result;
         this.SET_INIT_INFO(data)

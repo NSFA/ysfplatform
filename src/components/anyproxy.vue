@@ -61,6 +61,10 @@
       };
     },
     methods: {
+      /**
+       * 提交设置表单
+       * @param formName
+       */
       submitForm(formName) {
         if (this.proxy_switch) {
           this.$notify.warning({
@@ -84,11 +88,18 @@
           }
         });
       },
+      /**
+       * 重置表单信息
+       * @param formName
+       */
       resetForm(formName) {
         this.$refs[formName].resetFields();
       }
     },
     mounted(){
+      /**
+       * 初始化表单信息
+       */
       _getProxy().then((res) => {
         let data = res.data;
         if (data.code === 200) {

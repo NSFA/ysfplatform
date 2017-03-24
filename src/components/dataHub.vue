@@ -28,6 +28,11 @@
     },
     methods: {
       ...mapMutations(["SET_DATA_ACTIVE_TAB"]),
+      /**
+       * 简单的设置下active
+       * @param key
+       * @param keypath
+       */
       setIndex(key, keypath){
         this.SET_DATA_ACTIVE_TAB(keypath[0])
       }

@@ -9,7 +9,7 @@
       </el-form-item>
       <el-form-item label="记住密码" prop="savePass">
         <el-switch on-text="" off-text="" v-model="loginForm.savePass"></el-switch>
-        <el-button type="primary" size="large" @click="submitForm('loginForm')" @keyup.enter="submitForm('loginForm')" style="margin-left: 40px">登录</el-button>
+        <el-button type="primary" size="large" @click="submitForm('loginForm')" style="margin-left: 40px">登录</el-button>
         <el-button size="large" @click="resetForm('loginForm')">重置</el-button>
       </el-form-item>
     </el-form>
@@ -17,7 +17,7 @@
 </template>
 
 <script>
-  import {_getLocalStorage, _saveLocalStorage, _clearStorage,_getCookie}  from "../javascript/util";
+  import {_getLocalStorage, _saveLocalStorage, _clearStorage, _getCookie}  from "../javascript/util";
   import  {_login} from "../javascript/getData";
   import {mapState, mapMutations} from 'vuex';
 
@@ -41,6 +41,9 @@
       };
     },
     methods: {
+      /**
+       * 提交登录信息
+       */
       submitForm(formName) {
         this.$refs[formName].validate((valid) => {
           if (valid) {
@@ -60,9 +63,15 @@
           }
         });
       },
+      /**
+       * 重置表单
+       */
       resetForm(formName) {
         this.$refs[formName].resetFields();
       },
+      /**
+       * 保存登录信息
+       */
       saveLoginInfo(){
         ["account", "password", "savePass"].forEach((item) => {
           _saveLocalStorage(item, this.loginForm[item]);
@@ -78,6 +87,12 @@
         this.loginForm.password = _getLocalStorage("password");
         this.loginForm.savePass = JSON.parse(_getLocalStorage("savePass"));
       }
+      document.body.addEventListener('keydown', (e) => {
+        const event = e || window.event;
+        if (event.keyCode === 13) {
+          this.submitForm('loginForm');
+        }
+      });
     }
   }
 </script>
