@@ -15,6 +15,7 @@
           </el-form-item>
           <el-form-item label="ForceProxyHttps" prop="forceProxyHttps">
             <el-switch on-text="" off-text="" v-model="proxy_form.forceProxyHttps"></el-switch>
+            <span>需要配置CA,详情见<a href="http://anyproxy.io/4.x/#配置帮助" target="_blank">AnyProxy设置</a></span>
           </el-form-item>
           <el-form-item label="限速值(默认不限速 kb/s)" prop="throttle">
             <el-input v-model.number="proxy_form.throttle" type="number"></el-input>
