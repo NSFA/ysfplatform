@@ -47,3 +47,32 @@ export const _getProxy = () => {
 export const _setProxy = (form) => {
   return axios.post("/api/setProxy", form);
 };
+
+/**
+ * 获取API信息
+ * @param pid
+ * @returns {AxiosPromise}
+ * @private
+ */
+export const _getApi = (pid) => {
+  return axios.get("/api/getApi", pid);
+};
+
+/**
+ * 删除API
+ * @param pid
+ * @returns {AxiosPromise}
+ * @private
+ */
+export const _delApi=(pid)=>{
+  return axios.post("/api/delApi", pid);
+};
+
+/**
+ * 获取API表
+ * @returns {AxiosPromise}
+ * @private
+ */
+export const _getApiList = () => {
+  return axios.get("/api/getApiList");
+};
