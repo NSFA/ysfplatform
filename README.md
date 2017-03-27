@@ -26,15 +26,14 @@
 
 ## 部署
 申请网易云主机部署， 把 **mock server** 部署到云主机上。
+> ssh -p 22 root@ip -i ~/.ssh/fengchao-web-dev
 
+`mac`上设置私钥权限
+> chmod 400 ~/.ssh/fengchao-web-dev
 
 | 软件 | 版本 | 说明  |
 | --- | --- | --- |
 | nodejs | 7.6.0 | node环境 |
 | npm | 4.4.4 | npm包环境 |
 | pm2| 2.4.2 | 进程监控|
-| mongodb| stable| 数据库|
-
-
-
-
+| mongodb| stable| 数据库|  
