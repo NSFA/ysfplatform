@@ -5,9 +5,9 @@
       <span class="el-dialog__title" v-else>编辑API</span>
     </div>
     <div class="dialogForm_body">
-      <el-form :model="form" label-width="120px">
+      <el-form :model="form" label-width="120px" >
         <el-form-item label="API地址">
-          <el-input v-model="form.name" auto-complete="off"></el-input>
+          <el-input v-model="form.name"  auto-complete="off"></el-input>
         </el-form-item>
         <el-form-item label="开启状态">
           <el-switch on-text="开启" off-text="关闭" v-model="form.status" :width="60"></el-switch>
@@ -134,18 +134,21 @@
   .dialogForm_title {
     margin-bottom: 20px;
   }
+
   .dialogForm_body {
     width: 90%;
     margin: 0 auto;
     text-align: left;
-      .el-form-item__label {
-        text-align: center;
-      }
+    .el-form-item__label {
+      text-align: center;
+    }
   }
+
   .json_editor_group {
     text-align: center;
     padding-top: 20px;
   }
+
   .json_editor {
     height: 400px;
     width: 90%;
