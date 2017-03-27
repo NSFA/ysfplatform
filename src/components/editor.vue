@@ -5,9 +5,12 @@
       <span class="el-dialog__title" v-else>编辑API</span>
     </div>
     <div class="dialogForm_body">
-      <el-form :model="form" label-width="120px" >
+      <el-form :model="form" label-width="120px">
         <el-form-item label="API地址">
-          <el-input v-model="form.name"  auto-complete="off"></el-input>
+          <el-input v-model="form.name" auto-complete="off"></el-input>
+        </el-form-item>
+        <el-form-item label="返回状态码">
+          <el-input v-model.number="form.statusCode" auto-complete="off" type="number"></el-input>
         </el-form-item>
         <el-form-item label="开启状态">
           <el-switch on-text="开启" off-text="关闭" v-model="form.status" :width="60"></el-switch>
@@ -36,6 +39,7 @@
           form: {
             name: '',
             status: true,
+            statusCode: 200,
           },
           json: {
             code: 200,
@@ -105,6 +109,7 @@
             if (data.code === 200) {
               this.form.name = result.name;
               this.form.status = result.status;
+              this.form.statusCode = result.statusCode;
               this.editor.set(result.json);
             } else {
               this.$notify.error({
