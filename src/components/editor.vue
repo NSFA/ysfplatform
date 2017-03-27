@@ -75,7 +75,7 @@
           if (data.code === 200) {
             this.$emit("hideDialog", {"listchange": true});
             this.$notify.success({
-              message: '添加Api成功',
+              message: data.msg,
             });
           } else {
             this.$notify.error({

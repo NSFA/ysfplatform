@@ -16,6 +16,10 @@
           <el-form-item label="AnyProxy端口" prop="anyproxy_port">
             <el-input v-model.number="proxy_form.anyproxy_port" type="number"></el-input>
           </el-form-item>
+          <el-form-item label="ws通信端口" prop="ws_port">
+            <el-input v-model.number="proxy_form.ws_port" type="number"></el-input>
+          </el-form-item>
+
           <el-form-item label="ForceProxyHttps" prop="forceProxyHttps">
             <el-switch on-text="开启" off-text="关闭" :width="60" v-model="proxy_form.forceProxyHttps"></el-switch>
             <span>需要配置CA,详情见<a href="http://anyproxy.io/4.x/#配置帮助" target="_blank">AnyProxy设置</a></span>
@@ -49,6 +53,7 @@
         loading: false,
         proxy_form: {
           url: '',
+          ws_port:null,
           port: null,
           anyproxy_port: null,
           forceProxyHttps: false,
@@ -59,6 +64,9 @@
             {type: 'string', required: true, message: '请输入需要代理的url', trigger: 'blur'}
           ],
           port: [
+            {type: 'number', required: true, message: '请输入正确的代理目标端口', trigger: 'blur'},
+          ],
+          ws_port: [
             {type: 'number', required: true, message: '请输入正确的代理目标端口', trigger: 'blur'},
           ],
           anyproxy_port: [
