@@ -89,12 +89,6 @@
        * @param pid
        */
       deleteClick(pid){
-        if (this.proxy_switch) {
-          this.$notify.warning({
-            message: "请关闭服务器后再进行操作"
-          });
-          return;
-        }
         _delApi({id: pid}).then((res) => {
           const data = res.data, result = data.result;
           if (data.code === 200) {
@@ -114,12 +108,6 @@
        * @param pid
        */
       editClick(pid) {
-        if (this.proxy_switch) {
-          this.$notify.warning({
-            message: "请关闭服务器后再进行操作"
-          });
-          return;
-        }
         this.dialog_id = pid;
         this.dialogFormVisible = true;
       },
