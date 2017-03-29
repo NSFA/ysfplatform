@@ -16,7 +16,7 @@
         </li>
       </router-link>
       <router-link to="/dataHub">
-        <li :class="{ zel: activeTab === 3 }" @click="SET_ACTIVE_TAB(3),setHubTab()">
+        <li :class="{ zel: activeTab === 3 }" @click="SET_ACTIVE_TAB(3)">
           <i class="el-icon-setting icon-li"></i><span class="list_title">拦截设置</span>
         </li>
       </router-link>
@@ -42,10 +42,7 @@
       }
     },
     methods: {
-      ...mapMutations(["SET_ACTIVE_TAB", "SET_DATA_ACTIVE_TAB"]),
-      setHubTab(){
-        this.SET_DATA_ACTIVE_TAB("1");
-      },
+      ...mapMutations(["SET_ACTIVE_TAB"]),
       changePaginationType(){
         this.pagination_type = this.pagination_type === 1 ? 0 : 1;
       }

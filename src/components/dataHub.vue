@@ -1,25 +1,35 @@
 <template>
   <div>
     <el-menu theme="dark" :default-active="hubActiveTab" mode="horizontal" @select="setIndex">
-      <router-link to="/dataHub/reqList">
-        <el-menu-item index="1">请求拦截</el-menu-item>
-      </router-link>
-      <router-link to="/dataHub/apiList">
-        <el-menu-item index="2">响应拦截</el-menu-item>
-      </router-link>
+      <template v-for="item in routerMap">
+        <router-link :to="item.url">
+          <el-menu-item :index="item.index">{{item.name}}</el-menu-item>
+        </router-link>
+      </template>
     </el-menu>
     <router-view class="main_content"></router-view>
   </div>
 </template>
-
 <script>
   import {mapState, mapMutations} from 'vuex';
   export default{
     computed: {
       ...mapState({
-        isLogin: "isLogin",
         hubActiveTab: "hubActiveTab"
       }),
+    },
+    data(){
+      return {
+        routerMap: [{
+          url: '/dataHub/reqList',
+          index: '1',
+          name: '请求拦截'
+        }, {
+          url: '/dataHub/apiList',
+          index: '2',
+          name: '响应拦截'
+        }]
+      }
     },
     methods: {
       ...mapMutations(["SET_DATA_ACTIVE_TAB"]),
@@ -30,7 +40,22 @@
        */
       setIndex(key, keypath){
         this.SET_DATA_ACTIVE_TAB(keypath[0])
+      },
+      /**
+       * 初始化Tab
+       */
+      initTab(){
+        const url = location.href.split("#")[1];
+        _.forEach(this.routerMap, (item) => {
+          if (item.url === url) {
+            this.SET_DATA_ACTIVE_TAB(item.index);
+            return false;
+          }
+        })
       }
     },
+    mounted(){
+      this.initTab();
+    }
   }
 </script>

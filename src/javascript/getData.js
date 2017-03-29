@@ -38,11 +38,10 @@ export const _setProxy = (form) => {
 export const _getApi = (pid) => {
   return axios.get("/api/getApi", {
     params: {
-      id:pid
+      id: pid
     }
   });
 };
-
 /**
  * 添加API信息
  * @param info
@@ -69,4 +68,45 @@ export const _delApi = (pid) => {
  */
 export const _getApiList = () => {
   return axios.get("/api/getApiList");
+};
+
+/**
+ * 获取ReqAPI信息
+ * @param pid
+ * @returns {AxiosPromise}
+ * @private
+ */
+export const _getReqApi = (pid) => {
+  return axios.get("/api/getReqApi", {
+    params: {
+      id: pid
+    }
+  });
+};
+/**
+ * 添加ReqAPI信息
+ * @param info
+ * @returns {AxiosPromise}
+ * @private
+ */
+export const _addReqApi = (info) => {
+  return axios.post("/api/addReqApi", info);
+};
+/**
+ * 删除ReqAPI
+ * @param pid
+ * @returns {AxiosPromise}
+ * @private
+ */
+export const _delReqApi = (pid) => {
+  return axios.post("/api/delReqApi", pid);
+};
+
+/**
+ * 获取ReqAPI表
+ * @returns {AxiosPromise}
+ * @private
+ */
+export const _getReqApiList = () => {
+  return axios.get("/api/getReqApiList");
 };

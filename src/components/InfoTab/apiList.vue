@@ -20,7 +20,7 @@
       <el-table-column
         prop="name"
         sortable
-        label="API">
+        label="响应拦截API">
       </el-table-column>
       <el-table-column
         prop="status"
