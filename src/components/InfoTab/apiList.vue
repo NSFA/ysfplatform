@@ -52,11 +52,7 @@
   import editor from '../editor.vue'
   import {_getApiList, _delApi} from '../../javascript/getData'
   import moment from 'moment'
-  import {mapState} from 'vuex'
   export default{
-    computed: {
-      ...mapState(['proxy_switch'])
-    },
     components: {
       editor
     },

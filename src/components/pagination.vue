@@ -10,9 +10,14 @@
           <i class="el-icon-menu icon-li"></i><span class="list_title">AnyProxy</span>
         </li>
       </router-link>
+      <router-link to="/adminInfo">
+        <li :class="{ zel: activeTab === 2 }" @click="SET_ACTIVE_TAB(2)">
+          <i class="el-icon-view icon-li"></i><span class="list_title">信息监控</span>
+        </li>
+      </router-link>
       <router-link to="/dataHub">
-        <li :class="{ zel: activeTab === 2 }" @click="SET_ACTIVE_TAB(2),setHubTab()">
-          <i class="el-icon-setting icon-li"></i><span class="list_title">API设置</span>
+        <li :class="{ zel: activeTab === 3 }" @click="SET_ACTIVE_TAB(3),setHubTab()">
+          <i class="el-icon-setting icon-li"></i><span class="list_title">拦截设置</span>
         </li>
       </router-link>
     </ul>

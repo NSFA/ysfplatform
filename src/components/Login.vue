@@ -8,7 +8,7 @@
         <el-input type="password" v-model="loginForm.password" auto-complete="off"></el-input>
       </el-form-item>
       <el-form-item label="记住密码" prop="savePass">
-        <el-switch on-text="" off-text="" v-model="loginForm.savePass"></el-switch>
+        <el-switch v-model="loginForm.savePass"></el-switch>
         <el-button type="primary" size="large" @click="submitForm('loginForm')" style="margin-left: 40px">登录</el-button>
         <el-button size="large" @click="resetForm('loginForm')">重置</el-button>
       </el-form-item>
@@ -19,7 +19,6 @@
 <script>
   import {_getLocalStorage, _saveLocalStorage, _clearStorage, _getCookie}  from "../javascript/util";
   import  {_login} from "../javascript/getData";
-  import {mapState, mapMutations} from 'vuex';
 
   export default {
     name: "login",

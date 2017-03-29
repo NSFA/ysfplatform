@@ -6,8 +6,9 @@ const Login = r => require.ensure([], () => r(require('../components/Login')), '
 const Main = r => require.ensure([], () => r(require('../components/Main')), 'Main')
 const anyproxy = r => require.ensure([], () => r(require('../components/anyproxy')), 'anyproxy')
 const dataHub = r => require.ensure([], () => r(require('../components/dataHub')), 'dataHub')
-const adminInfo = r => require.ensure([], () => r(require('../components/InfoTab/adminInfo')), 'adminInfo')
+const adminInfo = r => require.ensure([], () => r(require('../components/adminInfo')), 'adminInfo')
 const apiList = r => require.ensure([], () => r(require('../components/InfoTab/apiList')), 'apiList')
+const reqList = r => require.ensure([], () => r(require('../components/InfoTab/reqList')), 'reqList')
 
 Vue.use(Router);
 
@@ -28,6 +29,10 @@ export default new Router({
           redirect: 'anyproxy'
         },
         {
+          path: 'adminInfo',
+          component: adminInfo
+        },
+        {
           path: 'anyproxy',
           component: anyproxy
         },
@@ -37,16 +42,16 @@ export default new Router({
           children: [
             {
               path: '',
-              redirect: 'apiList'
+              redirect: 'reqList'
             },
             {
               path: 'apiList',
               component: apiList,
             },
             {
-              path: 'adminInfo',
-              component: adminInfo
-            },
+              path: 'reqList',
+              component: reqList,
+            }
           ]
         }
       ]

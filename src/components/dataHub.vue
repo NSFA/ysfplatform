@@ -1,13 +1,12 @@
 <template>
   <div>
     <el-menu theme="dark" :default-active="hubActiveTab" mode="horizontal" @select="setIndex">
+      <router-link to="/dataHub/reqList">
+        <el-menu-item index="1">请求拦截</el-menu-item>
+      </router-link>
       <router-link to="/dataHub/apiList">
-        <el-menu-item index="1">API列表</el-menu-item>
+        <el-menu-item index="2">响应拦截</el-menu-item>
       </router-link>
-      <router-link to="/dataHub/adminInfo">
-        <el-menu-item index="2">AnyProxy界面</el-menu-item>
-      </router-link>
-      <switchChange></switchChange>
     </el-menu>
     <router-view class="main_content"></router-view>
   </div>
@@ -15,11 +14,7 @@
 
 <script>
   import {mapState, mapMutations} from 'vuex';
-  import switchChange from './switchChange'
   export default{
-    components: {
-      switchChange
-    },
     computed: {
       ...mapState({
         isLogin: "isLogin",
