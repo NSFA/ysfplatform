@@ -35,6 +35,7 @@
 | npm | 4.4.4 | npm包环境 |
 | pm2| 2.4.2 | 进程监控|
 | mongodb| stable| 数据库|  
+|Nginx| stable|静态资源代理服务|
 
 ## 使用说明
 ### 线上地址
