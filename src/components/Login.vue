@@ -9,7 +9,7 @@
       </el-form-item>
       <el-form-item label="记住密码" prop="savePass">
         <el-switch v-model="loginForm.savePass"></el-switch>
-        <el-button type="primary" size="large" @click="submitForm('loginForm')" style="margin-left: 40px">登录</el-button>
+        <el-button type="primary" size="large" @click="submitForm('loginForm')" style="margin-left: 25px">登录</el-button>
         <el-button size="large" @click="resetForm('loginForm')">重置</el-button>
       </el-form-item>
     </el-form>
