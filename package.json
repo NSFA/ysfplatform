@@ -2,7 +2,7 @@
   "name": "proxy",
   "version": "1.0.0",
   "description": "proxy project frontend",
-  "author": "hzqingze <hzqingze@corp.netease.com>",
+  "author": "hzqingze",
   "private": true,
   "scripts": {
     "dev": "node build/dev-server.js",
