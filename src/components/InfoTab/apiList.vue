@@ -85,18 +85,29 @@
        * @param pid
        */
       deleteClick(pid){
-        _delApi({id: pid}).then((res) => {
-          const data = res.data, result = data.result;
-          if (data.code === 200) {
-            this.tableData = _.filter(this.tableData, (item) => item._id !== pid)
-            this.$notify.success({
-              message: "删除Api成功"
-            });
-          } else {
-            this.$notify.error({
-              message: data.msg
-            });
-          }
+        this.$confirm('此操作将永久删除该API设置项, 是否继续?', '提示', {
+          confirmButtonText: '确定',
+          cancelButtonText: '取消',
+          type: 'warning'
+        }).then(() => {
+          _delApi({id: pid}).then((res) => {
+            const data = res.data;
+            if (data.code === 200) {
+              this.tableData = _.filter(this.tableData, (item) => item._id !== pid);
+              this.$notify.success({
+                message: "删除Api成功"
+              });
+            } else {
+              this.$notify.error({
+                message: data.msg
+              });
+            }
+          });
+        }).catch(() => {
+          this.$notify({
+            type: 'info',
+            message: '已取消删除'
+          });
         });
       },
       /**
