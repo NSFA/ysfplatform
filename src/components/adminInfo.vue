@@ -16,7 +16,7 @@
           iframe.style.width = "100%";
           iframe.style.height = "100%";
           iframe.style.border = 0;
-//          ip 上线需更改为服务器ip, anyproxy 源码里也一样
+//          ip 上线需更改为服务器ip, anyproxy 源码里也一样 59.111.99.122
           iframe.src = `http://localhost:${perms.data.result.anyproxy_port}`;
           parent.appendChild(iframe);
       });
