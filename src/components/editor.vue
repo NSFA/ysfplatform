@@ -15,6 +15,16 @@
         <el-form-item label="开启状态">
           <el-switch on-text="开启" off-text="关闭" v-model="form.status" :width="60"></el-switch>
         </el-form-item>
+        <el-form-item label="模板选择">
+          <el-select v-model.number="form.template" placeholder="请选择模板">
+            <el-option
+              v-for="item in templateOptions"
+              :label="item.label"
+              :value="item.value">
+            </el-option>
+          </el-select>
+          <el-button type="text" @click="addTab()">添加Tab</el-button>
+        </el-form-item>
       </el-form>
     </div>
     <div class="json_editor_wrapper">
@@ -40,20 +50,40 @@
             name: '',
             status: true,
             statusCode: 200,
-          },
-          json: {
+            template: 1
+          }
+        },
+        jsonArr: [
+          {
             code: 200,
             message: "",
             result: ""
           }
-        },
+        ],
         form: {
           name: '',
-          status: false
-        }
+          status: false,
+          template: 1
+        },
+        templateOptions: []
       }
     },
     methods: {
+      /**
+       *添加Tab
+       */
+      addTab(){
+        const index = _.maxBy(this.templateOptions, (o) => o.value).value;
+        this.templateOptions.push({
+          value: index + 1,
+          label: `模板-${index + 1}`
+        });
+        this.jsonArr.push({
+          code: 200,
+          message: "",
+          result: ""
+        });
+      },
       /**
        * 取消操作
        */
@@ -73,7 +103,15 @@
           });
           return;
         }
-        const formData = _.assign({json, id: this.dialog_id}, this.form);
+        this.jsonArr.splice(this.form.template - 1, 1, json);
+
+        const formData = {
+          ...this.form,
+          jsonArr: this.jsonArr,
+          id: this.dialog_id,
+          templateOptions: this.templateOptions
+        };
+
         _addApi(formData).then((res) => {
           const data = res.data;
           if (data.code === 200) {
@@ -89,28 +127,63 @@
         })
       },
       /**
-       * 初始化默认数据
+       * 填加API时填默认数据
        */
       init(){
-        this.editor.set(this.initData.json);
-        _.assign(this.form, this.initData.form)
+        _.assign(this.form, this.initData.form);
+        this.jsonArr = [{
+          code: 200,
+          message: "",
+          result: ""
+        }];
+        this.templateOptions = [{
+          value: 1,
+          label: '模板-1'
+        }];
+        this.editor.set(this.jsonArr[this.form.template - 1]);
       },
+      /**
+       * 设置watch
+       */
+      setWatch(){
+        this.unwatch = this.$watch('form.template', function (newTpl, oldTpl) {
+          try {
+            var jsonItem = this.editor.get();
+          } catch (err) {
+            this.$notify.error({
+              title: "编辑错误",
+              message: err.toString()
+            });
+            this.editor.set(this.jsonArr[newTpl - 1]);
+            return;
+          }
+          this.jsonArr.splice(oldTpl - 1, 1, jsonItem);
+          this.editor.set(this.jsonArr[newTpl - 1]);
+        })
+      }
     },
     mounted(){
       /**
-       * 监听模态框关闭
+       * 监听模态框打开
        */
       this.$on('openDialog', function () {
         if (this.dialog_id === -1) {
           this.init();
+          this.setWatch();
         } else {
           _getApi(this.dialog_id).then((res) => {
             const data = res.data, result = data.result;
             if (data.code === 200) {
-              this.form.name = result.name;
-              this.form.status = result.status;
-              this.form.statusCode = result.statusCode;
-              this.editor.set(result.json);
+              this.form = {
+                name: result.name,
+                status: result.status,
+                statusCode: result.statusCode,
+                template: result.template
+              };
+              this.jsonArr = result.jsonArr;
+              this.templateOptions = result.templateOptions;
+              this.editor.set(result.jsonArr[result.template - 1]);
+              this.setWatch();
             } else {
               this.$notify.error({
                 title: '错误',
@@ -119,6 +192,12 @@
             }
           });
         }
+      });
+      /**
+       *监听模态框关闭
+       */
+      this.$on('closeDialog', function () {
+        this.unwatch();
       });
       /**
        * 初始化编辑器
