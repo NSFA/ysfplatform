@@ -3,9 +3,8 @@
 </template>
 
 <script>
-  import {_getInfo, _getProxy} from '../javascript/getData'
+  import {_getProxy} from '../javascript/getData'
   import {mapState} from 'vuex'
-  import axios from 'axios'
   export default{
     data(){
       return {}

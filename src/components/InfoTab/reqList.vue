@@ -2,7 +2,7 @@
   <div class="api_list">
     <div class="api_list_add">
       <el-button type="primary" icon="edit" @click="editClick(-1)">添加</el-button>
-      <el-dialog v-model="dialogFormVisible" :modal-append-to-body="false" :show-close="false" @open="dialogOpen">
+      <el-dialog v-model="dialogFormVisible" :modal-append-to-body="false" :show-close="false" @open="dialogOpen" @close="dialogClose">
         <reqEditor :dialog_id="dialog_id" ref="editor"></reqEditor>
       </el-dialog>
     </div>
@@ -78,6 +78,9 @@
             this.dialogFormVisible = false;
           });
         })
+      },
+      dialogClose(){
+        this.$refs['editor'].$emit('closeDialog');
       },
       /**
        * 删除Api

@@ -12,6 +12,16 @@
         <el-form-item label="开启状态">
           <el-switch on-text="开启" off-text="关闭" v-model="form.status" :width="60"></el-switch>
         </el-form-item>
+        <el-form-item label="模板选择">
+          <el-select v-model.number="form.template" placeholder="请选择模板">
+            <el-option
+              v-for="item in templateOptions"
+              :label="item.label"
+              :value="item.value">
+            </el-option>
+          </el-select>
+          <el-button type="text" @click="addTab()">添加Tab</el-button>
+        </el-form-item>
         <el-form-item label="请求格式">
           <el-select v-model="form.type" placeholder="请选择类型">
             <el-option
@@ -78,11 +88,13 @@
           value: 3,
           label: "raw"
         }],
+        reqArr: [],
         initData: {
           form: {
             name: '',
             status: true,
-            type: 1
+            type: 1,
+            template: 1
           },
           reqData: {
             request: ""
@@ -97,12 +109,101 @@
         form: {
           name: '',
           status: false,
-          type: 1
+          type: 1,
+          template: 1
         },
         raw: "",
+        templateOptions: []
       }
     },
     methods: {
+      /**
+       * 设置watch
+       */
+      setWatch(){
+        this.unwatch = this.$watch('form.template', function (newTpl, oldTpl) {
+          const Otype = this.form.type;
+          const Ntype = this.reqArr[newTpl - 1].type;
+          var Oitem;
+          //存储旧的项
+          switch (Otype) {
+            case 1:
+              try {
+                Oitem = this.editor.get();
+              } catch (err) {
+                this.$notify.error({
+                  title: "编辑错误",
+                  message: err.toString()
+                });
+                return;
+              }
+              break;
+            case 2:
+              Oitem = this.formDatas;
+              break;
+            case 3:
+              Oitem = this.raw;
+              break;
+            default:
+              break;
+          }
+          const Odata = {
+            type: this.form.type,
+            reqData: Oitem
+          };
+          this.reqArr.splice(oldTpl - 1, 1, Odata);
+          //reset
+          this.editor.set({request: ""});
+          this.raw = '';
+          this.formDatas = [
+            {
+              key: "",
+              value: "",
+            }
+          ];
+          //设置新的项
+          switch (Ntype) {
+            case 1:
+              try {
+                this.editor.set(this.reqArr[newTpl - 1].reqData);
+              } catch (err) {
+                this.$notify.error({
+                  title: "设置错误",
+                  message: err.toString()
+                });
+                return;
+              }
+              break;
+            case 2:
+              this.formDatas = this.reqArr[newTpl - 1].reqData;
+              break;
+            case 3:
+              this.raw = this.reqArr[newTpl - 1].reqData;
+              break;
+            default:
+              break;
+          }
+          this.form.type = Ntype;
+        })
+      },
+      /**
+       *添加Tab
+       */
+      addTab(){
+        const index = _.maxBy(this.templateOptions, (o) => o.value).value;
+        this.templateOptions.push({
+          value: index + 1,
+          label: `模板-${index + 1}`
+        });
+        this.reqArr.push(
+          {
+            type: 1,
+            reqData: {
+              "request": ""
+            }
+          }
+        );
+      },
       /**
        * 取消操作
        */
@@ -113,6 +214,12 @@
        * 删除form项
        */
       deleteFormItem(index){
+        if (this.formDatas.length === 1) {
+          this.$notify.warning({
+            message: "Form表单至少需要一项"
+          });
+          return;
+        }
         this.formDatas.splice(index, 1);
       },
       /**
@@ -125,11 +232,12 @@
        * 提交编辑或添加Api
        */
       submitEditor(){
-        var reqData;
-        switch (this.form.type) {
+        const type = this.form.type;
+        var item;
+        switch (type) {
           case 1:
             try {
-              reqData = this.editor.get();
+              item = this.editor.get();
             } catch (err) {
               this.$notify.error({
                 title: "编辑错误",
@@ -139,15 +247,26 @@
             }
             break;
           case 2:
-            reqData = this.formDatas;
+            item = this.formDatas;
             break;
           case 3:
-            reqData = this.raw;
+            item = this.raw;
             break;
           default:
             break;
         }
-        const formData = _.assign({reqData, id: this.dialog_id}, this.form);
+        const data = {
+          type: this.form.type,
+          reqData: item
+        };
+        this.reqArr.splice(this.form.template - 1, 1, data);
+
+        const formData = {
+          reqArr: this.reqArr,
+          id: this.dialog_id,
+          templateOptions: this.templateOptions,
+          ...this.form,
+        };
         _addReqApi(formData).then((res) => {
           const data = res.data;
           if (data.code === 200) {
@@ -168,36 +287,55 @@
        */
       init(){
         this.editor.set(this.initData.reqData);
-        _.assign(this.form, this.initData.form)
+        _.assign(this.form, this.initData.form);
+        this.reqArr.push({
+          type: 1,
+          reqData: {
+            request: "",
+          }
+        });
+        this.templateOptions = [{
+          value: 1,
+          label: '模板-1'
+        }];
       }
     },
-    mounted(){
+    mounted()
+    {
       /**
        * 监听模态框关闭
        */
       this.$on('openDialog', function () {
         if (this.dialog_id === -1) {
           this.init();
+          this.setWatch();
         } else {
           _getReqApi(this.dialog_id).then((res) => {
             const data = res.data, result = data.result;
             if (data.code === 200) {
-              this.form.name = result.name;
-              this.form.status = result.status;
-              this.form.type = result.type;
-              switch (result.type) {
+              this.form = {
+                name: result.name,
+                status: result.status,
+                type: result.type,
+                template: result.template
+              };
+              this.templateOptions = result.templateOptions;
+              this.reqArr = result.reqArr;
+              const reqData = this.reqArr[this.form.template - 1].reqData;
+              switch (this.reqArr[this.form.template - 1].type) {
                 case 1:
-                  this.editor.set(result.reqData);
+                  this.editor.set(reqData);
                   break;
                 case 2:
-                  this.formDatas = result.reqData;
+                  this.formDatas = reqData;
                   break;
                 case 3:
-                  this.raw = result.reqData;
+                  this.raw = reqData;
                   break;
                 default:
                   break;
               }
+              this.setWatch();
             } else {
               this.$notify.error({
                 title: '错误',
@@ -206,6 +344,13 @@
             }
           });
         }
+      });
+      /**
+       *监听模态框关闭
+       */
+      this.$on('closeDialog', function () {
+        this.reqArr = [];
+        this.unwatch();
       });
       /**
        * 初始化编辑器
