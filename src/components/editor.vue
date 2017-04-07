@@ -1,7 +1,7 @@
 <template>
   <div>
     <div slot="title" class="dialogForm_title">
-      <span class="el-dialog__title" v-if="dialog_id === -1 "> 添加API </span>
+      <span class="el-dialog__title" v-if="dialog_id === -1 ">添加API</span>
       <span class="el-dialog__title" v-else>编辑API</span>
     </div>
     <div class="dialogForm_body">
@@ -15,17 +15,25 @@
         <el-form-item label="开启状态">
           <el-switch on-text="开启" off-text="关闭" v-model="form.status" :width="60"></el-switch>
         </el-form-item>
-        <el-form-item label="模板选择">
-          <el-select v-model.number="form.template" placeholder="请选择模板">
-            <el-option
-              v-for="item in templateOptions"
-              :label="item.label"
-              :value="item.value">
-            </el-option>
-          </el-select>
-          <el-button type="text" @click="addTab()">添加Tab</el-button>
-        </el-form-item>
       </el-form>
+      <div style="position: relative">
+        <div style="margin-bottom: 20px;">
+          <el-popover ref="popover1" placement="bottom" width="160" v-model="addFormVisible">
+            <p>请填写模板名</p>
+            <el-input v-model="addName" size="mini" auto-complete="off" style="margin-bottom: 5px;"></el-input>
+            <div style="text-align: right; margin: 0">
+              <el-button size="mini" type="text" @click="addFormReset">取消</el-button>
+              <el-button type="primary" size="mini" @click="addFormSubmit">确定</el-button>
+            </div>
+          </el-popover>
+          <el-button v-popover:popover1 type="text" style="position: absolute;right: 18px;bottom: 80px;z-index: 1">
+            添加模板
+          </el-button>
+        </div>
+        <el-tabs v-model="form.template" type="card" closable @tab-remove="removeTab">
+          <el-tab-pane v-for="item in templateOptions" :label="item.label" :name="item.value"></el-tab-pane>
+        </el-tabs>
+      </div>
     </div>
     <div class="json_editor_wrapper">
       <div class="json_editor" ref="json_editor"></div>
@@ -45,43 +53,72 @@
     props: ['dialog_id'],
     data(){
       return {
-        initData: {
-          form: {
-            name: '',
-            status: true,
-            statusCode: 200,
-            template: 1
-          }
-        },
-        jsonArr: [
-          {
+        jsonArr: {  //JSON editor数据
+          "1": {
             code: 200,
             message: "",
             result: ""
           }
-        ],
-        form: {
+        },
+        form: {  //提交表单数据
           name: '',
           status: false,
-          template: 1
+          template: "1"
         },
-        templateOptions: []
+        templateOptions: [], //Tab选项
+        addFormVisible: false, //添加Tab选项popover是否可见
+        addName: '' //新添加的Tab的名字
       }
     },
     methods: {
       /**
-       *添加Tab
+       * 重置添加Tab框
        */
-      addTab(){
-        const index = _.maxBy(this.templateOptions, (o) => o.value).value;
-        this.templateOptions.push({
-          value: index + 1,
-          label: `模板-${index + 1}`
-        });
-        this.jsonArr.push({
+      addFormReset(){
+        this.addName = '';
+        this.addFormVisible = false;
+      },
+      /**
+       * 确认添加Tab框
+       */
+      addFormSubmit(){
+        const index = _.maxBy(this.templateOptions, (o) => +o.value).value;
+        const newTab = {
+          value: (+index + 1).toString(),
+          label: this.addName
+        };
+        const newContent = {
           code: 200,
           message: "",
           result: ""
+        };
+        this.templateOptions.push(newTab);
+        this.jsonArr[+index + 1] = newContent;
+        this.addFormReset();
+      },
+      /**
+       * 确认删除Tab框
+       */
+      removeTab(name){
+        if (this.templateOptions.length <= 1) {
+          this.$message({
+            showClose: true,
+            message: '至少需要保留一个Tab哟',
+            type: 'warning'
+          });
+          return;
+        }
+        //处理删除数据
+        _.forEach(this.templateOptions, (option, index) => {
+          if (option.value === name) {
+            this.templateOptions.splice(index, 1);
+            delete this.jsonArr[index + 1];
+            //删除当前Tab回到第一个Tab
+            if (this.form.template === name) {
+              this.form.template = this.templateOptions[0].value;
+            }
+            return !1;
+          }
         });
       },
       /**
@@ -103,15 +140,15 @@
           });
           return;
         }
-        this.jsonArr.splice(this.form.template - 1, 1, json);
-
+        this.jsonArr[this.form.template] = json;
+        //组合提交数据
         const formData = {
           ...this.form,
           jsonArr: this.jsonArr,
           id: this.dialog_id,
           templateOptions: this.templateOptions
         };
-
+        //发送请求
         _addApi(formData).then((res) => {
           const data = res.data;
           if (data.code === 200) {
@@ -127,20 +164,31 @@
         })
       },
       /**
-       * 填加API时填默认数据
+       * 添加API时填默认数据
        */
       init(){
-        _.assign(this.form, this.initData.form);
-        this.jsonArr = [{
-          code: 200,
-          message: "",
-          result: ""
-        }];
+        //初始化表单数据
+        _.assign(this.form, {
+          name: '',
+          status: true,
+          statusCode: 200,
+          template: "1"
+        });
+        //初始化JSON编辑器数据
+        this.jsonArr = {
+          "1": {
+            code: 200,
+            message: "",
+            result: ""
+          },
+        };
+        //初始化Tab数据
         this.templateOptions = [{
-          value: 1,
-          label: '模板-1'
+          value: "1",
+          label: '默认模板'
         }];
-        this.editor.set(this.jsonArr[this.form.template - 1]);
+        //设置编辑器内容
+        this.editor.set(this.jsonArr[this.form.template]);
       },
       /**
        * 设置watch
@@ -154,11 +202,11 @@
               title: "编辑错误",
               message: err.toString()
             });
-            this.editor.set(this.jsonArr[newTpl - 1]);
+            this.editor.set(this.jsonArr[newTpl]);
             return;
           }
-          this.jsonArr.splice(oldTpl - 1, 1, jsonItem);
-          this.editor.set(this.jsonArr[newTpl - 1]);
+          this.jsonArr[oldTpl] = jsonItem;
+          this.editor.set(this.jsonArr[newTpl]);
         })
       }
     },
@@ -182,7 +230,7 @@
               };
               this.jsonArr = result.jsonArr;
               this.templateOptions = result.templateOptions;
-              this.editor.set(result.jsonArr[result.template - 1]);
+              this.editor.set(result.jsonArr[result.template]);
               this.setWatch();
             } else {
               this.$notify.error({
@@ -195,6 +243,7 @@
       });
       /**
        *监听模态框关闭
+       *关闭时停止watch
        */
       this.$on('closeDialog', function () {
         this.unwatch();

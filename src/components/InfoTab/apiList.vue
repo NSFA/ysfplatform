@@ -18,6 +18,12 @@
         width="200">
       </el-table-column>
       <el-table-column
+        prop="update"
+        label="更新时间"
+        sortable
+        width="150">
+      </el-table-column>
+      <el-table-column
         prop="name"
         sortable
         label="响应拦截API">
@@ -142,6 +148,7 @@
             moment.locale('zh-cn');
             this.tableData = _.forEach(result, (item) => {
               item.date = moment(item.date).format('lll');
+              item.update = moment(item.update).calendar();
             });
           } else {
             this.$notify.error({
