@@ -1,7 +1,7 @@
 <template>
   <div>
     <div slot="title" class="dialogForm_title">
-      <span class="el-dialog__title" v-if="dialog_id === -1 "> 添加API </span>
+      <span class="el-dialog__title" v-if="dialog_id === -1 ">添加API</span>
       <span class="el-dialog__title" v-else>编辑API</span>
     </div>
     <div class="dialogForm_body">
@@ -12,18 +12,29 @@
         <el-form-item label="开启状态">
           <el-switch on-text="开启" off-text="关闭" v-model="form.status" :width="60"></el-switch>
         </el-form-item>
-        <el-form-item label="模板选择">
-          <el-select v-model.number="form.template" placeholder="请选择模板">
-            <el-option
-              v-for="item in templateOptions"
-              :label="item.label"
-              :value="item.value">
-            </el-option>
-          </el-select>
-          <el-button type="text" @click="addTab()">添加Tab</el-button>
-        </el-form-item>
+        <div style="position: relative">
+          <div style="margin-bottom: 20px;">
+            <el-popover ref="popover1" placement="bottom" width="160" v-model="addFormVisible">
+              <p>请填写模板名</p>
+              <el-input v-model="addName" size="mini" auto-complete="off" style="margin-bottom: 5px;"></el-input>
+              <div style="text-align: right; margin: 0">
+                <el-button size="mini" type="text" @click="addFormReset">取消</el-button>
+                <el-button type="primary" size="mini" @click="addFormSubmit">确定</el-button>
+              </div>
+            </el-popover>
+            <el-button v-popover:popover1 type="text" style="position: absolute;right: 18px;bottom: 80px;z-index: 1">
+              添加模板
+
+
+
+            </el-button>
+          </div>
+          <el-tabs v-model="form.template" type="card" closable @tab-remove="removeTab">
+            <el-tab-pane v-for="item in templateOptions" :label="item.label" :name="item.value"></el-tab-pane>
+          </el-tabs>
+        </div>
         <el-form-item label="请求格式">
-          <el-select v-model="form.type" placeholder="请选择类型">
+          <el-select v-model="form.type" placeholder="请选择类型" width="265">
             <el-option
               v-for="item in options"
               :label="item.label"
@@ -37,7 +48,7 @@
       <div class="json_editor" ref="json_editor"></div>
     </div>
     <div v-show="form.type ===2" class="reqData_body reqData_body_1">
-      <template v-for="(item,index) in formDatas">
+      <template v-for="(item,index) in formData">
         <div class="reqData_item">
           <el-col :span="10">
             <el-input v-model="item.key" placeholder="key"></el-input>
@@ -88,19 +99,8 @@
           value: 3,
           label: "raw"
         }],
-        reqArr: [],
-        initData: {
-          form: {
-            name: '',
-            status: true,
-            type: 1,
-            template: 1
-          },
-          reqData: {
-            request: ""
-          }
-        },
-        formDatas: [
+        reqArr: {},
+        formData: [
           {
             key: "",
             value: "",
@@ -110,20 +110,75 @@
           name: '',
           status: false,
           type: 1,
-          template: 1
+          template: "1"
         },
         raw: "",
-        templateOptions: []
+        templateOptions: [],
+        addFormVisible: false, //添加Tab选项popover是否可见
+        addName: '' //新添加的Tab的名字
       }
     },
     methods: {
+      /**
+       * 重置添加Tab框
+       */
+      addFormReset(){
+        this.addName = '';
+        this.addFormVisible = false;
+      },
+      /**
+       * 确认添加Tab框
+       */
+      addFormSubmit(){
+        const index = _.maxBy(this.templateOptions, (o) => +o.value).value;
+        const newTab = {
+          value: (+index + 1).toString(),
+          label: this.addName
+        };
+        const newContent = {
+          type: 1,
+          reqData: {
+            code: 200,
+            message: "",
+            result: ""
+          }
+        };
+        this.templateOptions.push(newTab);
+        this.reqArr[+index + 1] = newContent;
+        this.addFormReset();
+      },
+      /**
+       * 确认删除Tab框
+       */
+      removeTab(name){
+        if (this.templateOptions.length <= 1) {
+          this.$message({
+            showClose: true,
+            message: '至少需要保留一个Tab哟',
+            type: 'warning'
+          });
+          return;
+        }
+        //处理删除数据
+        _.forEach(this.templateOptions, (option, index) => {
+          if (option.value === name) {
+            this.templateOptions.splice(index, 1);
+            delete this.reqArr[index + 1];
+            //删除当前Tab回到第一个Tab
+            if (this.form.template === name) {
+              this.form.template = this.templateOptions[0].value;
+            }
+            return !1;
+          }
+        });
+      },
       /**
        * 设置watch
        */
       setWatch(){
         this.unwatch = this.$watch('form.template', function (newTpl, oldTpl) {
           const Otype = this.form.type;
-          const Ntype = this.reqArr[newTpl - 1].type;
+          const Ntype = this.reqArr[newTpl].type;
           var Oitem;
           //存储旧的项
           switch (Otype) {
@@ -139,7 +194,7 @@
               }
               break;
             case 2:
-              Oitem = this.formDatas;
+              Oitem = this.formData;
               break;
             case 3:
               Oitem = this.raw;
@@ -147,15 +202,14 @@
             default:
               break;
           }
-          const Odata = {
+          this.reqArr[oldTpl]={
             type: this.form.type,
             reqData: Oitem
           };
-          this.reqArr.splice(oldTpl - 1, 1, Odata);
           //reset
           this.editor.set({request: ""});
           this.raw = '';
-          this.formDatas = [
+          this.formData = [
             {
               key: "",
               value: "",
@@ -165,7 +219,7 @@
           switch (Ntype) {
             case 1:
               try {
-                this.editor.set(this.reqArr[newTpl - 1].reqData);
+                this.editor.set(this.reqArr[newTpl].reqData);
               } catch (err) {
                 this.$notify.error({
                   title: "设置错误",
@@ -175,34 +229,16 @@
               }
               break;
             case 2:
-              this.formDatas = this.reqArr[newTpl - 1].reqData;
+              this.formData = this.reqArr[newTpl].reqData;
               break;
             case 3:
-              this.raw = this.reqArr[newTpl - 1].reqData;
+              this.raw = this.reqArr[newTpl].reqData;
               break;
             default:
               break;
           }
           this.form.type = Ntype;
         })
-      },
-      /**
-       *添加Tab
-       */
-      addTab(){
-        const index = _.maxBy(this.templateOptions, (o) => o.value).value;
-        this.templateOptions.push({
-          value: index + 1,
-          label: `模板-${index + 1}`
-        });
-        this.reqArr.push(
-          {
-            type: 1,
-            reqData: {
-              "request": ""
-            }
-          }
-        );
       },
       /**
        * 取消操作
@@ -214,19 +250,19 @@
        * 删除form项
        */
       deleteFormItem(index){
-        if (this.formDatas.length === 1) {
+        if (this.formData.length === 1) {
           this.$notify.warning({
             message: "Form表单至少需要一项"
           });
           return;
         }
-        this.formDatas.splice(index, 1);
+        this.formData.splice(index, 1);
       },
       /**
        * 添加form项
        */
       addFromItem(){
-        this.formDatas.push({key: "", vale: ""})
+        this.formData.push({key: "", vale: ""})
       },
       /**
        * 提交编辑或添加Api
@@ -247,7 +283,7 @@
             }
             break;
           case 2:
-            item = this.formDatas;
+            item = this.formData;
             break;
           case 3:
             item = this.raw;
@@ -255,12 +291,11 @@
           default:
             break;
         }
-        const data = {
+
+        this.reqArr[this.form.template]={
           type: this.form.type,
           reqData: item
         };
-        this.reqArr.splice(this.form.template - 1, 1, data);
-
         const formData = {
           reqArr: this.reqArr,
           id: this.dialog_id,
@@ -280,28 +315,36 @@
             });
           }
         })
-      }
-      ,
+      },
       /**
        * 初始化默认数据
        */
       init(){
-        this.editor.set(this.initData.reqData);
-        _.assign(this.form, this.initData.form);
-        this.reqArr.push({
+        this.editor.set({
+          request: ""
+        });
+
+        _.assign(this.form, {
+          name: '',
+          status: true,
+          type: 1,
+          template: "1"
+        });
+
+        this.reqArr[this.form.template] = {
           type: 1,
           reqData: {
             request: "",
           }
-        });
+        };
+
         this.templateOptions = [{
-          value: 1,
-          label: '模板-1'
+          value: "1",
+          label: '默认模板'
         }];
       }
     },
-    mounted()
-    {
+    mounted(){
       /**
        * 监听模态框关闭
        */
@@ -321,13 +364,13 @@
               };
               this.templateOptions = result.templateOptions;
               this.reqArr = result.reqArr;
-              const reqData = this.reqArr[this.form.template - 1].reqData;
-              switch (this.reqArr[this.form.template - 1].type) {
+              const reqData = this.reqArr[this.form.template].reqData;
+              switch (this.reqArr[this.form.template].type) {
                 case 1:
                   this.editor.set(reqData);
                   break;
                 case 2:
-                  this.formDatas = reqData;
+                  this.formData = reqData;
                   break;
                 case 3:
                   this.raw = reqData;
@@ -349,7 +392,7 @@
        *监听模态框关闭
        */
       this.$on('closeDialog', function () {
-        this.reqArr = [];
+        this.reqArr = {};
         this.unwatch();
       });
       /**
