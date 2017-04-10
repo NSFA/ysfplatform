@@ -62,6 +62,8 @@
     z-index: 1;
     .main_content {
       padding: 30px 20px;
+      overflow: auto;
+      height: calc(100% - 150px);
     }
   }
 }
