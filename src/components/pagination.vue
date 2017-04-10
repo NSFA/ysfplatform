@@ -20,6 +20,12 @@
           <i class="el-icon-setting icon-li"></i><span class="list_title">拦截设置</span>
         </li>
       </router-link>
+      <router-link to="/guide">
+        <li :class="{ zel: activeTab === 4 }" @click="SET_ACTIVE_TAB(4)">
+          <i class="el-icon-star-on icon-li"></i><span class="list_title">使用指南</span>
+        </li>
+      </router-link>
+
     </ul>
   </div>
 </template>

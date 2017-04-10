@@ -9,6 +9,7 @@ const dataHub = r => require.ensure([], () => r(require('../components/dataHub')
 const adminInfo = r => require.ensure([], () => r(require('../components/adminInfo')), 'adminInfo')
 const apiList = r => require.ensure([], () => r(require('../components/InfoTab/apiList')), 'apiList')
 const reqList = r => require.ensure([], () => r(require('../components/InfoTab/reqList')), 'reqList')
+const guide = r => require.ensure([], () => r(require('../components/guide')), 'guide')
 
 Vue.use(Router);
 
@@ -53,6 +54,10 @@ export default new Router({
               component: reqList,
             }
           ]
+        },
+        {
+          path:'guide',
+          component:guide
         }
       ]
     }
