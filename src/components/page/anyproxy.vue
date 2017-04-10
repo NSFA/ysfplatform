@@ -32,8 +32,6 @@
 </template>
 <script>
   import {_getProxy, _setProxy} from '../../javascript/getData'
-  import {mapMutations} from 'vuex'
-
   export default {
     data() {
       return {
@@ -43,8 +41,8 @@
           ws_port:null,
           port: null,
           anyproxy_port: null,
+          throttle: null,
           forceProxyHttps: false,
-          throttle: null
         },
         rules: {
           url: [
@@ -74,11 +72,10 @@
             _setProxy(this.proxy_form).then((res) => {
               this.loading = false;
               let data = res.data;
-              this.$notify({
+              this.$message({
                 showClose: true,
                 message: data.msg,
                 type: data.code === 200 ? 'success' : 'error',
-                offset: 50
               });
             })
           }

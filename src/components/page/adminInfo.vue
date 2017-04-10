@@ -1,10 +1,11 @@
 <template>
-  <div class="iframe_slot"></div>
+  <div class="iframe_slot" style="padding: 20px;"></div>
 </template>
 <script>
   import {_getProxy} from '../../javascript/getData'
   export default{
     mounted(){
+      //获取端口号后插入iFrame
       _getProxy().then((perms) => {
         const parent = document.querySelector('.iframe_slot');
         const iframe = document.createElement('iframe');
@@ -18,8 +19,3 @@
     }
   }
 </script>
-<style>
-  .iframe_slot {
-    padding: 20px;
-  }
-</style>

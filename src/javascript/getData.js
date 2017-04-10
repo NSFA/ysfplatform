@@ -1,4 +1,5 @@
 import axios from 'axios';
+
 /**
  * 登录接口
  * @param form
@@ -41,6 +42,7 @@ export const _getApi = (pid) => {
     }
   });
 };
+
 /**
  * 添加API信息
  * @param info
@@ -50,6 +52,7 @@ export const _getApi = (pid) => {
 export const _addApi = (info) => {
   return axios.post("/api/addApi", info);
 };
+
 /**
  * 删除API
  * @param pid
@@ -82,6 +85,7 @@ export const _getReqApi = (pid) => {
     }
   });
 };
+
 /**
  * 添加ReqAPI信息
  * @param info
@@ -91,6 +95,7 @@ export const _getReqApi = (pid) => {
 export const _addReqApi = (info) => {
   return axios.post("/api/addReqApi", info);
 };
+
 /**
  * 删除ReqAPI
  * @param pid
