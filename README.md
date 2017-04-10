@@ -19,7 +19,7 @@
 4. Anyproxy 代理
 
 
-![](./docs/14903247171829.jpg)
+![](./docs/api.png)
 
 
 ## 部署
