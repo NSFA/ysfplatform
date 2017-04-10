@@ -26,9 +26,9 @@
             <el-form-item label="返回状态码:">
               <span>{{ props.row.statusCode}}</span>
             </el-form-item>
-            <template v-for="(x,index) in props.row.jsonArr">
-              <el-form-item :label="props.row.templateOptions[index-1].label">
-                <span>{{x}}</span>
+            <template v-for="(value,key,index) in props.row.jsonArr">
+              <el-form-item :label="props.row.templateOptions[index].label">
+                <span>{{value}}</span>
               </el-form-item>
             </template>
           </el-form>

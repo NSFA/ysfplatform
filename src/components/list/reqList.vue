@@ -22,9 +22,9 @@
             <el-form-item label="状态:">
               <span>{{ props.row.status ? '开启' : '关闭' }}</span>
             </el-form-item>
-            <template v-for="(x,index) in props.row.reqArr">
-              <el-form-item :label="props.row.templateOptions[index-1].label">
-                <span>{{x.reqData}}</span>
+            <template v-for="(value,key,index) in props.row.reqArr">
+              <el-form-item :label="props.row.templateOptions[index].label">
+                <span>{{value.reqData}}</span>
               </el-form-item>
             </template>
           </el-form>
