@@ -3,7 +3,7 @@
     <div class="api_list_add">
       <el-button type="primary" icon="edit" @click="editClick(-1)">添加</el-button>
       <el-dialog v-model="dialogFormVisible" :modal-append-to-body="false" :show-close="false" @open="dialogOpen" @close="dialogClose">
-        <reqEditor :dialog_id="dialog_id" ref="editor"></reqEditor>
+        <editor :dialog_id="dialog_id" ref="editor"></editor>
       </el-dialog>
     </div>
     <el-table
@@ -26,7 +26,7 @@
       <el-table-column
         prop="name"
         sortable
-        label="请求拦截API">
+        label="响应拦截API">
       </el-table-column>
       <el-table-column
         prop="status"
@@ -52,13 +52,15 @@
     </el-table>
   </div>
 </template>
+
 <script>
-  import reqEditor from '../reqEditor.vue'
-  import {_getReqApiList, _delReqApi} from '../../javascript/getData'
+  //TODO:有空再做个分页
+  import editor from '../editor/editor.vue'
+  import {_getApiList, _delApi} from '../../javascript/getData'
   import moment from 'moment'
   export default{
     components: {
-      reqEditor
+      editor
     },
     data() {
       return {
@@ -97,7 +99,7 @@
           cancelButtonText: '取消',
           type: 'warning'
         }).then(() => {
-          _delReqApi({id: pid}).then((res) => {
+          _delApi({id: pid}).then((res) => {
             const data = res.data;
             if (data.code === 200) {
               this.tableData = _.filter(this.tableData, (item) => item._id !== pid);
@@ -139,7 +141,7 @@
        */
       getListInfo(){
         this.loading = true;
-        _getReqApiList().then((res) => {
+        _getApiList().then((res) => {
           this.loading = false;
           const data = res.data, result = data.result;
           if (data.code === 200) {

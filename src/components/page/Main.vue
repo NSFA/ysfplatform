@@ -6,7 +6,7 @@
 </template>
 
 <script>
-  import pagination from './pagination.vue'
+  import pagination from '../layout/pagination.vue'
   export default {
     components: {
       pagination

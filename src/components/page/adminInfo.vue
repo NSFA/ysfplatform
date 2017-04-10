@@ -2,7 +2,7 @@
   <div class="iframe_slot"></div>
 </template>
 <script>
-  import {_getProxy} from '../javascript/getData'
+  import {_getProxy} from '../../javascript/getData'
   export default{
     mounted(){
       _getProxy().then((perms) => {

@@ -2,14 +2,14 @@ import Vue from 'vue'
 import Router from 'vue-router'
 
 //webpack 按需加载
-const Login = r => require.ensure([], () => r(require('../components/Login')), 'Login')
-const Main = r => require.ensure([], () => r(require('../components/Main')), 'Main')
-const anyproxy = r => require.ensure([], () => r(require('../components/anyproxy')), 'anyproxy')
-const dataHub = r => require.ensure([], () => r(require('../components/dataHub')), 'dataHub')
-const adminInfo = r => require.ensure([], () => r(require('../components/adminInfo')), 'adminInfo')
-const apiList = r => require.ensure([], () => r(require('../components/InfoTab/apiList')), 'apiList')
-const reqList = r => require.ensure([], () => r(require('../components/InfoTab/reqList')), 'reqList')
-const guide = r => require.ensure([], () => r(require('../components/guide')), 'guide')
+const Login = r => require.ensure([], () => r(require('../components/page/Login')), 'Login');
+const Main = r => require.ensure([], () => r(require('../components/page/Main')), 'Main');
+const anyproxy = r => require.ensure([], () => r(require('../components/page/anyproxy')), 'anyproxy');
+const dataHub = r => require.ensure([], () => r(require('../components/page/dataHub')), 'dataHub');
+const adminInfo = r => require.ensure([], () => r(require('../components/page/adminInfo')), 'adminInfo');
+const apiList = r => require.ensure([], () => r(require('../components/list/apiList')), 'apiList');
+const reqList = r => require.ensure([], () => r(require('../components/list/reqList')), 'reqList');
+const guide = r => require.ensure([], () => r(require('../components/page/guide')), 'guide');
 
 Vue.use(Router);
 
@@ -56,8 +56,8 @@ export default new Router({
           ]
         },
         {
-          path:'guide',
-          component:guide
+          path: 'guide',
+          component: guide
         }
       ]
     }

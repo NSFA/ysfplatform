@@ -17,8 +17,8 @@
 </template>
 
 <script>
-  import {_getLocalStorage, _saveLocalStorage, _clearStorage, _getCookie}  from "../javascript/util";
-  import  {_login} from "../javascript/getData";
+  import {_getLocalStorage, _saveLocalStorage, _clearStorage, _getCookie}  from "../../javascript/util";
+  import  {_login} from "../../javascript/getData";
 
   export default {
     name: "login",

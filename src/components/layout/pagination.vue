@@ -18,7 +18,7 @@
 
 <script>
   import {mapState, mapMutations} from 'vuex';
-  import {_getCookie}  from "../javascript/util";
+  import {_getCookie}  from "../../javascript/util";
   export default {
     name: "pagination",
     computed: {

@@ -31,7 +31,7 @@
   </div>
 </template>
 <script>
-  import {_getProxy, _setProxy} from '../javascript/getData'
+  import {_getProxy, _setProxy} from '../../javascript/getData'
   import {mapMutations} from 'vuex'
 
   export default {

@@ -47,7 +47,7 @@
 <script>
   import JSONEditor from 'jsoneditor';
   import 'jsoneditor/dist/jsoneditor.css'
-  import {_getApi, _addApi} from '../javascript/getData'
+  import {_getApi, _addApi} from '../../javascript/getData'
   export default{
     name: 'jsoneditor',
     props: ['dialog_id'],
