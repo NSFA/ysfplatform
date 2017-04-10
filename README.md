@@ -49,3 +49,7 @@
 设置代理 `拦截url` 及 `代理端口号`
 
 ![](./docs/14907175843960.jpg)
+
+## App下载地址
+
+![ysfproxy](http://nimtest.nos.netease.com/MTAxODA5MA==/bmltYV8xNzMwMzQ0XzE0OTE4MDQwNDU3MDFfMjY3ZWYzOTEtZGEyNS00NjQwLTgxODUtYmNjNTU1YzQzNzdm)
