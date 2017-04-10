@@ -24,7 +24,7 @@
             </el-form-item>
             <template v-for="(x,index) in props.row.reqArr">
               <el-form-item :label="props.row.templateOptions[index-1].label">
-                <span>{{x}}</span>
+                <span>{{x.reqData}}</span>
               </el-form-item>
             </template>
           </el-form>
