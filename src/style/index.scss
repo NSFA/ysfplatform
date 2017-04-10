@@ -1,10 +1,10 @@
 //公共CSS
-@import "commom.scss";
-@import "layout.scss";
+@import "common/commom";
+@import "common/layout";
 //页面CSS
-@import "Login.scss";
-@import "guide.scss";
-@import "proxyset.scss";
-@import "list.scss";
+@import "page/Login";
+@import "page/guide";
+@import "page/proxyset";
+@import "page/list";
 //组件CSS
-@import "editor";
+@import "components/editor";
