@@ -95,20 +95,3 @@
     }
   }
 </script>
-
-<style>
-  .login_form_wrapper {
-    width: 100%;
-    height: 100%;
-    background: url("../assets/bg-login.png") no-repeat center;
-    background-size: cover;
-  }
-
-  .login_form {
-    width: 350px;
-    position: absolute;
-    top: 50%;
-    left: 50%;
-    transform: translate(-50%, -50%);
-  }
-</style>

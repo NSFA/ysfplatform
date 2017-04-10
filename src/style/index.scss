@@ -1,15 +1,10 @@
+//公共CSS
 @import "commom.scss";
 @import "layout.scss";
-
-.proxy_form {
-  width: 600px;
-}
-.proxy_switch {
-  color: #fff;
-  position: absolute;
-  right: 10px;
-  top: 20px;
-  >span {
-    padding-right: 20px;
-  }
-}
+//页面CSS
+@import "Login.scss";
+@import "guide.scss";
+@import "proxyset.scss";
+@import "list.scss";
+//组件CSS
+@import "editor";

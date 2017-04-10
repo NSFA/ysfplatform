@@ -1,5 +1,5 @@
 <template>
-  <div>
+  <div class="reqEditor">
     <div slot="title" class="dialogForm_title">
       <span class="el-dialog__title" v-if="dialog_id === -1 ">添加API</span>
       <span class="el-dialog__title" v-else>编辑API</span>
@@ -410,47 +410,3 @@
     }
   }
 </script>
-<style lang="scss" scoped>
-  .dialogForm_title {
-    margin-bottom: 20px;
-  }
-
-  .dialogForm_body {
-    width: 90%;
-    margin: 0 auto;
-    text-align: left;
-    .el-form-item__label {
-      text-align: center;
-    }
-  }
-
-  .reqData_body {
-    width: 90%;
-    padding: 20px;
-    margin: 0 auto;
-    .reqData_item {
-      zoom: 1;
-      padding-bottom: 2px;
-      &:after, &:before {
-        clear: both;
-        content: '.';
-        display: block;
-        width: 0;
-        height: 0;
-        visibility: hidden;
-      }
-    }
-  }
-
-  .json_editor_group {
-    text-align: center;
-    padding-top: 20px;
-  }
-
-  .json_editor {
-    height: 400px;
-    width: 90%;
-    margin: 0 auto;
-    text-align: left;
-  }
-</style>

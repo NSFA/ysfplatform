@@ -1,5 +1,5 @@
 <template>
-  <div class="main_content_wrapper">
+  <div class="main_content_wrapper" style="padding: 20px;">
     <div class="main_content">
       <div class="proxy_form">
         <el-form :model="proxy_form" :rules="rules" ref="proxy_form" label-width="200px">
@@ -99,8 +99,3 @@
   }
 
 </script>
-<style>
-  .main_content_wrapper{
-    padding: 20px;
-  }
-</style>

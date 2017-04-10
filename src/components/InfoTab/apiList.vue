@@ -167,18 +167,3 @@
     }
   }
 </script>
-<style>
-  .dialogForm_title {
-    text-align: center;
-  }
-
-  .api_list_add {
-    text-align: right;
-    margin-bottom: 20px;
-  }
-
-  .api_list {
-    width: 90%;
-    margin: 0 auto;
-  }
-</style>

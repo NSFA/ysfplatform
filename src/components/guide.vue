@@ -50,43 +50,6 @@
       return {
         active: 1
       }
-    },
-    methods: {}
+    }
   }
 </script>
-<style lang="scss">
-  .guide-main {
-    overflow: auto;
-    position: relative;
-    display: inline-block;
-    left: 50%;
-    transform: translate(-50%, 0);
-    .guide-step {
-      position: relative;
-      left: 50%;
-      display: inline-block;
-      margin-left: -238px;
-      margin-bottom: 50px;
-      margin-top: 50px;
-    }
-    .guide-btn {
-      position: absolute;
-      right: 100px;
-      top: 50%;
-      margin-top: -10px;
-    }
-    .step-img {
-      width: 1000px;
-      border-radius: 5px;
-    }
-    .step-a {
-      text-decoration: none;
-      color: #1D8CE0;
-    }
-    .guide-description {
-      .description {
-        margin-bottom: 20px;
-      }
-    }
-  }
-</style>

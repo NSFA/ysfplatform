@@ -1,5 +1,5 @@
 <template>
-  <div>
+  <div class="resEditor">
     <div slot="title" class="dialogForm_title">
       <span class="el-dialog__title" v-if="dialog_id === -1 ">添加API</span>
       <span class="el-dialog__title" v-else>编辑API</span>
@@ -263,29 +263,3 @@
     }
   }
 </script>
-<style lang="scss">
-  .dialogForm_title {
-    margin-bottom: 20px;
-  }
-
-  .dialogForm_body {
-    width: 90%;
-    margin: 0 auto;
-    text-align: left;
-    .el-form-item__label {
-      text-align: center;
-    }
-  }
-
-  .json_editor_group {
-    text-align: center;
-    padding-top: 20px;
-  }
-
-  .json_editor {
-    height: 400px;
-    width: 90%;
-    margin: 0 auto;
-    text-align: left;
-  }
-</style>
