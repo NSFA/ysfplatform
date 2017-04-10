@@ -52,4 +52,6 @@
 
 ## App下载地址
 
-![ysfproxy](http://nimtest.nos.netease.com/MTAxODA5MA==/bmltYV8xNzMwMzQ0XzE0OTE4MDQwNDU3MDFfMjY3ZWYzOTEtZGEyNS00NjQwLTgxODUtYmNjNTU1YzQzNzdm?download=ysfproxy.app)
+![](https://camo.githubusercontent.com/ae464f29a86e83210cd300c1e95f14ba7320393d/687474703a2f2f6e6f732e6e6574656173652e636f6d2f6b6e6f776c656467652f31616464356238382d383030302d346434322d393136652d346361383964663035646461)
+
+[ysfproxy](http://nimtest.nos.netease.com/MTAxODA5MA==/bmltYV8xNzMwMzQ0XzE0OTE4MDQwNDU3MDFfMjY3ZWYzOTEtZGEyNS00NjQwLTgxODUtYmNjNTU1YzQzNzdm?download=ysfproxy.app)
