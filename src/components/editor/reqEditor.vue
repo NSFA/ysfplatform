@@ -38,6 +38,7 @@
               :value="item.value">
             </el-option>
           </el-select>
+            <el-button type="text"  @click="addFromItem" class="add_Btn" v-if="form.type===2">添加表单项</el-button>
         </el-form-item>
       </el-form>
     </div>
@@ -53,11 +54,8 @@
           <el-col :span="10">
             <el-input v-model="item.value" placeholder="value"></el-input>
           </el-col>
-          <el-col :span="2">
+          <el-col :span="4">
             <el-button type="primary" icon="delete" plain @click="deleteFormItem(index)"></el-button>
-          </el-col>
-          <el-col :span="2">
-            <el-button type="primary" plain @click="addFromItem">添加</el-button>
           </el-col>
         </div>
       </template>
