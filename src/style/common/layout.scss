@@ -2,7 +2,7 @@
 .main_page {
   display: flex;
   height: inherit;
-  .pagination_left {
+  .menu_left {
     width: 180px;
     box-shadow: 0 5px 5px #ccc;
     height: 100%;
@@ -24,7 +24,7 @@
         visibility: visible;
         transition: all .3s ease;
       }
-      &.pagination_small {
+      &.menu_small {
         li {
           .list_title {
             opacity: 0;

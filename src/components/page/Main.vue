@@ -1,15 +1,15 @@
 <template>
   <div class="main_page">
-    <pagination></pagination>
+    <menu_left></menu_left>
     <router-view class="view-page"></router-view>
   </div>
 </template>
 
 <script>
-  import pagination from '../layout/pagination.vue'
+  import menu_left from '../layout/menu.vue'
   export default {
     components: {
-      pagination
+      menu_left
     }
   }
 </script>

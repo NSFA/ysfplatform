@@ -1,12 +1,12 @@
 <template>
-  <div class="pagination_left" :style="{width:widthPoint+'px'}">
-    <div class="head div-item" @click="changePaginationType">
-      <span v-if="pagination_type === 1">测试代理平台<i class="el-icon-d-arrow-left" style="padding-left: 10px"></i></span>
+  <div class="menu_left" :style="{width:widthPoint+'px'}">
+    <div class="head div-item" @click="changeMenuType">
+      <span v-if="menu_type === 1">测试代理平台<i class="el-icon-d-arrow-left" style="padding-left: 10px"></i></span>
       <span v-else><i class="el-icon-d-arrow-right"></i></span>
     </div>
-    <ul :class="[pagination_type === 1 ? 'pagination_normal' : 'pagination_small']">
+    <ul :class="[menu_type === 1 ? 'menu_normal' : 'menu_small']">
       <template v-for="x in routersMap">
-        <el-tooltip class="item" effect="dark" :content="x.name" placement="right" :disabled="pagination_type === 1">
+        <el-tooltip class="item" effect="dark" :content="x.name" placement="right" :disabled="menu_type === 1">
           <router-link :to="x.link">
             <li :class="{ zel: activeTab === x.id }" @click="SET_ACTIVE_TAB(x.id)">
               <i class="icon-li" :class="x.icon"></i><span class="list_title">{{x.name}}</span>
@@ -22,16 +22,16 @@
   import {mapState, mapMutations} from 'vuex';
   import {_getCookie}  from "../../javascript/util";
   export default {
-    name: "pagination",
+    name: "menu_left",
     computed: {
       ...mapState(["isLogin", "activeTab", "widthPoint"]),
       widthPoint(){
-        return this.pagination_type === 1 ? 180 : 50
+        return this.menu_type === 1 ? 180 : 50
       }
     },
     data(){
       return {
-        pagination_type: 1,
+        menu_type: 1,
         routersMap: [
           {
             id: 1,
@@ -59,8 +59,8 @@
     },
     methods: {
       ...mapMutations(["SET_ACTIVE_TAB"]),
-      changePaginationType(){
-        this.pagination_type = this.pagination_type === 1 ? 0 : 1;
+      changeMenuType(){
+        this.menu_type = this.menu_type === 1 ? 0 : 1;
       }
     },
     mounted(){
