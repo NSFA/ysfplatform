@@ -6,11 +6,13 @@
     </div>
     <ul :class="[pagination_type === 1 ? 'pagination_normal' : 'pagination_small']">
       <template v-for="x in routersMap">
-        <router-link :to="x.link">
-          <li :class="{ zel: activeTab === x.id }" @click="SET_ACTIVE_TAB(x.id)">
-            <i class="icon-li" :class="x.icon"></i><span class="list_title">{{x.name}}</span>
-          </li>
-        </router-link>
+        <el-tooltip class="item" effect="dark" :content="x.name" placement="right" :disabled="pagination_type === 1">
+          <router-link :to="x.link">
+            <li :class="{ zel: activeTab === x.id }" @click="SET_ACTIVE_TAB(x.id)">
+              <i class="icon-li" :class="x.icon"></i><span class="list_title">{{x.name}}</span>
+            </li>
+          </router-link>
+        </el-tooltip>
       </template>
     </ul>
   </div>
@@ -33,7 +35,7 @@
         routersMap: [
           {
             id: 1,
-            name: 'AnyProxy',
+            name: '拦截设置',
             link: '/anyproxy',
             icon: 'el-icon-menu'
           }, {
@@ -43,7 +45,7 @@
             icon: 'el-icon-view'
           }, {
             id: 3,
-            name: '拦截设置',
+            name: 'API设置',
             link: '/dataHub',
             icon: 'el-icon-setting'
           }, {

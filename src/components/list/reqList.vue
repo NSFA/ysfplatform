@@ -2,7 +2,8 @@
   <div class="api_list">
     <div class="api_list_add">
       <el-button type="primary" icon="edit" @click="editClick(-1)">添加</el-button>
-      <el-dialog v-model="dialogFormVisible" :modal-append-to-body="false" :show-close="false" @open="dialogOpen" @close="dialogClose">
+      <el-dialog v-model="dialogFormVisible" :modal-append-to-body="false" :show-close="false" @open="dialogOpen"
+                 @close="dialogClose">
         <reqEditor :dialog_id="dialog_id" ref="editor"></reqEditor>
       </el-dialog>
     </div>
@@ -35,13 +36,15 @@
       <el-table-column prop="name" sortable label="请求拦截API">
       </el-table-column>
       <el-table-column prop="status" label="状态" width="100"
-        :filters="[{ text: '开启', value: true }, { text: '关闭', value: false }]"
-        :filter-method="filterTag">
+                       :filters="[{ text: '开启', value: true }, { text: '关闭', value: false }]"
+                       :filter-method="filterTag">
         <template scope="scope">
-          <el-tag
-            :type="scope.row.status === true ? 'primary' : 'warning'"
-            close-transition>{{scope.row.status === true ? "开启" :"关闭" }}
-          </el-tag>
+          <el-switch
+            v-model="scope.row.status"
+            on-text="开启"
+            off-text="关闭"
+            @change="changeStatus(scope.row._id,scope.row.status)">
+          </el-switch>
         </template>
       </el-table-column>
       <el-table-column
@@ -57,7 +60,7 @@
 </template>
 <script>
   import reqEditor from '../editor/reqEditor.vue'
-  import {_getReqApiList, _delReqApi} from '../../javascript/getData'
+  import {_getReqApiList, _delReqApi, _setApiStatus} from '../../javascript/getData'
   import moment from 'moment'
   export default{
     components: {
@@ -72,6 +75,27 @@
       }
     },
     methods: {
+      /**
+       * Api状态更改
+       */
+      changeStatus(id, status){
+        _setApiStatus({id, status, list: "req"}).then((res) => {
+          const data = res.data;
+          if (data.code === 200) {
+            this.$message.success({
+              message: "设置成功"
+            });
+          } else {
+            this.$message.error({
+              message: data.msg
+            });
+          }
+        }).catch((err) => {
+          this.$message.error({
+            message: "请求失败"
+          });
+        })
+      },
       /**
        * 模态框开启回调
        * 监听editor事件

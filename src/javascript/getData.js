@@ -114,3 +114,8 @@ export const _delReqApi = (pid) => {
 export const _getReqApiList = () => {
   return axios.get("/api/getReqApiList");
 };
+
+
+export const _setApiStatus = (data) => {
+  return axios.post("/api/setApiStatus",data);
+};

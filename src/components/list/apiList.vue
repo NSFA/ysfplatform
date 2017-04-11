@@ -41,10 +41,12 @@
                        :filters="[{ text: '开启', value: true }, { text: '关闭', value: false }]"
                        :filter-method="filterTag">
         <template scope="scope">
-          <el-tag :type="scope.row.status === true ? 'primary' : 'warning'" close-transition>
-            {{scope.row.status === true ? "开启" : "关闭" }}
-
-          </el-tag>
+          <el-switch
+            v-model="scope.row.status"
+            on-text="开启"
+            off-text="关闭"
+            @change="changeStatus(scope.row._id,scope.row.status)">
+          </el-switch>
         </template>
       </el-table-column>
       <el-table-column label="操作" width="100">
@@ -58,7 +60,7 @@
 </template>
 <script>
   import editor from '../editor/editor.vue'
-  import {_getApiList, _delApi} from '../../javascript/getData'
+  import {_getApiList, _delApi, _setApiStatus} from '../../javascript/getData'
   import moment from 'moment'
   export default{
     components: {
@@ -73,6 +75,27 @@
       }
     },
     methods: {
+      /**
+       * Api状态更改
+       */
+      changeStatus(id, status){
+        _setApiStatus({id, status, list: "res"}).then((res) => {
+          const data = res.data;
+          if (data.code === 200) {
+            this.$message.success({
+              message: "设置成功"
+            });
+          } else {
+            this.$message.error({
+              message: data.msg
+            });
+          }
+        }).catch((err) => {
+          this.$message.error({
+            message: "请求失败"
+          });
+        })
+      },
       /**
        * 模态框开启回调
        * 监听editor事件
