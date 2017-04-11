@@ -28,6 +28,7 @@
           </el-popover>
           <el-button v-popover:popover1 type="text" style="position: absolute;right: 18px;bottom: 80px;z-index: 1">
             添加模板
+
           </el-button>
         </div>
         <el-tabs v-model="form.template" type="card" closable @tab-remove="removeTab">
@@ -103,7 +104,7 @@
         if (this.templateOptions.length <= 1) {
           this.$message({
             showClose: true,
-            message: '至少需要保留一个Tab哟',
+            message: '至少需要保留一个Tab',
             type: 'warning'
           });
           return;
@@ -153,11 +154,11 @@
           const data = res.data;
           if (data.code === 200) {
             this.$emit("hideDialog", {"listchange": true});
-            this.$notify.success({
+            this.$message.success({
               message: data.msg,
             });
           } else {
-            this.$notify.error({
+            this.$message.error({
               message: data.msg
             });
           }

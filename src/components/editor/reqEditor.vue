@@ -24,9 +24,6 @@
             </el-popover>
             <el-button v-popover:popover1 type="text" style="position: absolute;right: 18px;bottom: 80px;z-index: 1">
               添加模板
-
-
-
             </el-button>
           </div>
           <el-tabs v-model="form.template" type="card" closable @tab-remove="removeTab">
@@ -34,7 +31,7 @@
           </el-tabs>
         </div>
         <el-form-item label="请求格式">
-          <el-select v-model="form.type" placeholder="请选择类型" width="265">
+          <el-select v-model="form.type" placeholder="请选择类型" >
             <el-option
               v-for="item in options"
               :label="item.label"
@@ -89,6 +86,7 @@
     props: ['dialog_id'],
     data(){
       return {
+        //请求格式选项
         options: [{
           value: 1,
           label: "application/json"
@@ -99,13 +97,14 @@
           value: 3,
           label: "raw"
         }],
-        reqArr: {},
-        formData: [
+        reqArr: {}, //模板数据
+        formData: [  //FormData 初始化
           {
             key: "",
             value: "",
           }
         ],
+        //表单数据
         form: {
           name: '',
           status: false,
@@ -131,6 +130,7 @@
        */
       addFormSubmit(){
         const index = _.maxBy(this.templateOptions, (o) => +o.value).value;
+        //组合新的Tab
         const newTab = {
           value: (+index + 1).toString(),
           label: this.addName
@@ -154,7 +154,7 @@
         if (this.templateOptions.length <= 1) {
           this.$message({
             showClose: true,
-            message: '至少需要保留一个Tab哟',
+            message: '至少需要保留一个Tab',
             type: 'warning'
           });
           return;
@@ -202,11 +202,12 @@
             default:
               break;
           }
-          this.reqArr[oldTpl]={
+          this.reqArr[oldTpl] = {
             type: this.form.type,
             reqData: Oitem
           };
-          //reset
+
+          //重置模板
           this.editor.set({request: ""});
           this.raw = '';
           this.formData = [
@@ -215,6 +216,7 @@
               value: "",
             }
           ];
+
           //设置新的项
           switch (Ntype) {
             case 1:
@@ -237,6 +239,8 @@
             default:
               break;
           }
+
+          //切换type
           this.form.type = Ntype;
         })
       },
@@ -251,7 +255,7 @@
        */
       deleteFormItem(index){
         if (this.formData.length === 1) {
-          this.$notify.warning({
+          this.$message.warning({
             message: "Form表单至少需要一项"
           });
           return;
@@ -268,6 +272,7 @@
        * 提交编辑或添加Api
        */
       submitEditor(){
+        //存储当前模板
         const type = this.form.type;
         var item;
         switch (type) {
@@ -291,11 +296,12 @@
           default:
             break;
         }
-
-        this.reqArr[this.form.template]={
+        this.reqArr[this.form.template] = {
           type: this.form.type,
           reqData: item
         };
+
+        //组合提交数据
         const formData = {
           reqArr: this.reqArr,
           id: this.dialog_id,
@@ -306,11 +312,11 @@
           const data = res.data;
           if (data.code === 200) {
             this.$emit("hideDialog", {"listchange": true});
-            this.$notify.success({
+            this.$message.success({
               message: data.msg,
             });
           } else {
-            this.$notify.error({
+            this.$message.error({
               message: data.msg
             });
           }
@@ -320,10 +326,13 @@
        * 初始化默认数据
        */
       init(){
+
+        //JSONEditor
         this.editor.set({
           request: ""
         });
 
+        //Form数据
         _.assign(this.form, {
           name: '',
           status: true,
@@ -331,6 +340,7 @@
           template: "1"
         });
 
+        //reqArr
         this.reqArr[this.form.template] = {
           type: 1,
           reqData: {
@@ -338,6 +348,7 @@
           }
         };
 
+        //模板列表
         this.templateOptions = [{
           value: "1",
           label: '默认模板'
