@@ -19,9 +19,9 @@
           <el-form-item label="拦截url" prop="url">
             <el-input v-model="proxy_form.url"></el-input>
           </el-form-item>
-          <el-form-item label="限速值(默认不限速 kb/s)" prop="throttle">
-            <el-input v-model.number="proxy_form.throttle" type="number"></el-input>
-          </el-form-item>
+          <!--<el-form-item label="限速值(默认不限速 kb/s)" prop="throttle">-->
+            <!--<el-input v-model.number="proxy_form.throttle" type="number"></el-input>-->
+          <!--</el-form-item>-->
           <el-form-item>
             <el-button type="primary" size="large"  @click="submitForm('proxy_form')" :disabled="loading">保存</el-button>
           </el-form-item>
