@@ -13,18 +13,27 @@
             {{proxy_form.ws_port}}
           </el-form-item>
           <!--<el-form-item label="ForceProxyHttps" prop="forceProxyHttps">-->
-            <!--<el-switch on-text="开启" off-text="关闭" :width="60" v-model="proxy_form.forceProxyHttps" disabled></el-switch>-->
-            <!--<span>需配CA,详情：<a href="http://anyproxy.io/4.x/#配置帮助" target="_blank">AnyProxy设置</a>,暂时只开放拦截url设置</span>-->
+          <!--<el-switch on-text="开启" off-text="关闭" :width="60" v-model="proxy_form.forceProxyHttps" disabled></el-switch>-->
+          <!--<span>需配CA,详情：<a href="http://anyproxy.io/4.x/#配置帮助" target="_blank">AnyProxy设置</a>,暂时只开放拦截url设置</span>-->
           <!--</el-form-item>-->
           <el-form-item label="拦截url" prop="url">
-            <el-input v-model="proxy_form.url"></el-input>
+            <el-col :span="18">
+              <template v-if="!edit">
+                {{proxy_form.url}}
+              </template>
+              <template v-else>
+                <el-input v-model="proxy_form.url"></el-input>
+              </template>
+            </el-col>
+            <el-col :span="6" style="text-align: center">
+              <el-button type="text"  @click="editUrl" :disabled="loading">
+                {{edit ? "保存" : "更改"}}
+              </el-button>
+            </el-col>
           </el-form-item>
           <!--<el-form-item label="限速值(默认不限速 kb/s)" prop="throttle">-->
-            <!--<el-input v-model.number="proxy_form.throttle" type="number"></el-input>-->
+          <!--<el-input v-model.number="proxy_form.throttle" type="number"></el-input>-->
           <!--</el-form-item>-->
-          <el-form-item>
-            <el-button type="primary" size="large"  @click="submitForm('proxy_form')" :disabled="loading">保存</el-button>
-          </el-form-item>
         </el-form>
       </div>
     </div>
@@ -36,6 +45,7 @@
     data() {
       return {
         loading: false,
+        edit: false,
         proxy_form: {
           url: '',
           ws_port:null,
@@ -61,6 +71,12 @@
       };
     },
     methods: {
+      editUrl(){
+        this.edit = !this.edit;
+        if(!this.edit){
+          this.submitForm('proxy_form');
+        }
+      },
       /**
        * 提交设置表单
        * @param formName
