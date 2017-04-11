@@ -7,21 +7,21 @@
             <el-input v-model="proxy_form.url"></el-input>
           </el-form-item>
           <el-form-item label="代理端口" prop="port">
-            <el-input v-model.number="proxy_form.port" type="number" disabled></el-input>
+            {{proxy_form.port}}
           </el-form-item>
           <el-form-item label="AnyProxy端口" prop="anyproxy_port">
-            <el-input v-model.number="proxy_form.anyproxy_port" type="number" disabled></el-input>
+            {{proxy_form.anyproxy_port}}
           </el-form-item>
           <el-form-item label="ws通信端口" prop="ws_port">
-            <el-input v-model.number="proxy_form.ws_port" type="number" disabled></el-input>
+            {{proxy_form.ws_port}}
           </el-form-item>
-          <el-form-item label="ForceProxyHttps" prop="forceProxyHttps">
-            <el-switch on-text="开启" off-text="关闭" :width="60" v-model="proxy_form.forceProxyHttps" disabled></el-switch>
-            <span>需配CA,详情：<a href="http://anyproxy.io/4.x/#配置帮助" target="_blank">AnyProxy设置</a>,暂时只开放拦截url设置</span>
-          </el-form-item>
-          <el-form-item label="限速值(默认不限速 kb/s)" prop="throttle">
-            <el-input v-model.number="proxy_form.throttle" type="number" disabled></el-input>
-          </el-form-item>
+          <!--<el-form-item label="ForceProxyHttps" prop="forceProxyHttps">-->
+            <!--<el-switch on-text="开启" off-text="关闭" :width="60" v-model="proxy_form.forceProxyHttps" disabled></el-switch>-->
+            <!--<span>需配CA,详情：<a href="http://anyproxy.io/4.x/#配置帮助" target="_blank">AnyProxy设置</a>,暂时只开放拦截url设置</span>-->
+          <!--</el-form-item>-->
+          <!--<el-form-item label="限速值(默认不限速 kb/s)" prop="throttle">-->
+            <!--<el-input v-model.number="proxy_form.throttle" type="number" disabled></el-input>-->
+          <!--</el-form-item>-->
           <el-form-item>
             <el-button type="primary" size="large"  @click="submitForm('proxy_form')" :disabled="loading">保存</el-button>
           </el-form-item>
