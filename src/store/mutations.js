@@ -10,6 +10,30 @@ const mutations = {
   },
   SET_INIT_INFO(state, info){
     _.extend(state, info);
+  },
+  SET_WS(state, info){
+    state.wsInited = info;
+  },
+  SET_RECORDING(state){
+    state.recording = !state.recording;
+  },
+  SET_WS_LIST_FILTER(state, filter){
+    state.filter = filter;
+  },
+  SET_WS_LIST(state, obj){
+    switch (obj.type) {
+      case "add":
+        state.wsList.push(obj.data);
+        break;
+      case "clear":
+        state.wsList = [];
+        break;
+      case "change":
+        _.extend(state.wsList[obj.index], obj.data);
+        break;
+      default:
+        break;
+    }
   }
 };
 

@@ -23,3 +23,9 @@
     margin: 0;
   }
 }
+
+//
+.iframe_slot{
+  height: calc(100% - 60px);
+  overflow: auto;
+}

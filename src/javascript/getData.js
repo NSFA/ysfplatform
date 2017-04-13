@@ -119,3 +119,7 @@ export const _getReqApiList = () => {
 export const _setApiStatus = (data) => {
   return axios.post("/api/setApiStatus",data);
 };
+
+export const _getInitData =()=>{
+  return axios.get("/api/getInitData");
+};

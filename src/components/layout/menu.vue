@@ -61,12 +61,22 @@
       ...mapMutations(["SET_ACTIVE_TAB"]),
       changeMenuType(){
         this.menu_type = this.menu_type === 1 ? 0 : 1;
+      },
+      initTab(){
+        const url = location.href.split("#")[1];
+        _.forEach(this.routersMap, (item) => {
+          if (item.link === url) {
+            this.SET_ACTIVE_TAB(item.id);
+            return false;
+          }
+        })
       }
     },
     mounted(){
       if (!_getCookie('login')) {
         this.$router.push('/login');
       }
+      this.initTab();
     }
   }
 </script>
