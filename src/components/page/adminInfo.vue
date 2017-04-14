@@ -8,41 +8,52 @@
         :on-icon-click="handleIconClick" :autofocus="true" @keyup.enter.native="handleIconClick">
       </el-input>
     </el-col>
-    <el-col style="padding-bottom: 20px;width: 400px;display: inline-block;float:right;">
+    <el-col style="padding-bottom: 20px;width: 500px;display: inline-block;float:right;">
       <el-popover
         ref="popover1"
-        title="Proxy Running Info"
+        title="服务器信息"
         trigger="hover">
         <el-form>
+          <el-form-item label="拦截模式">
+            <span>HTTP</span>
+          </el-form-item>
           <template v-for="x in serverInfo.ipAddress">
-            <el-form-item label="Host Address">
+            <el-form-item label="IP地址">
               <span>{{x}}</span>
             </el-form-item>
           </template>
-          <el-form-item label="port">
-            <span>{{serverInfo.port}}</span>
-          </el-form-item>
-          <el-form-item label="wsPort">
+          <el-form-item label="webSocket">
             <span>{{serverInfo.wsPort}}</span>
           </el-form-item>
         </el-form>
       </el-popover>
+      <el-popover
+        ref="popover2"
+        title="证书信息"
+        trigger="hover">
+        <div style="text-align: center">
+          <h4>手机扫描下载</h4>
+          <div v-html="qrCode.qrImgDom"></div>
+          <p>证书安装情况：{{qrCode.isRootCAFileExists ? "已安装" : "未安装"}}</p>
+          <a :href="qrCode.url" download>
+            <el-button>点击下载</el-button>
+          </a>
+        </div>
+      </el-popover>
+      <el-button v-popover:popover2 type="primary">获取证书</el-button>
       <el-button v-popover:popover1 type="primary">服务器信息</el-button>
       <el-button type="success" @click="clearList">Clear</el-button>
       <el-button :type="btnType" @click="toggleReceive"> {{recording ? "Stop" : "Resume"}}</el-button>
       <el-button type="primary" @click="Reload">Reload</el-button>
     </el-col>
-    <el-col style="padding-bottom: 20px;width: 200px;display: inline-block;float: right;">
-      <p>仅显示 50 条记录</p>
-    </el-col>
     <el-table
       :data="wsListFilter"
       style="width: 100%" stripe border
-      :default-sort = "{prop: 'id', order: 'descending'}" >
+      :default-sort="{prop: 'id', order: 'descending'}">
       <el-table-column type="expand">
         <template scope="props">
           <el-form label-position="left" class="list-expand" labelWidth="150px">
-            <el-form-item label="id" >
+            <el-form-item label="id">
               <span>{{ props.row.id }}</span>
             </el-form-item>
             <el-form-item label="method">
@@ -91,6 +102,11 @@
         width="100" sortable>
       </el-table-column>
       <el-table-column
+        prop="protocol"
+        label="Protocol"
+        width="100">
+      </el-table-column>
+      <el-table-column
         prop="method"
         label="Method"
         width="180">
@@ -112,7 +128,7 @@
   </div>
 </template>
 <script>
-  import {_getInitData, _getlatestLog, _getReqBody} from '../../javascript/getData'
+  import {_getInitData, _getlatestLog, _getReqBody, _getQrCode} from '../../javascript/getData'
   import {initWs} from '../../javascript/wsUtil'
   import moment from  'moment'
   import{mapState, mapMutations, mapGetters} from 'vuex'
@@ -120,7 +136,8 @@
     data(){
       return {
         serverInfo: {},
-        search: ""
+        search: "",
+        qrCode: {}
       }
     },
     computed: {
@@ -155,18 +172,6 @@
         try {
           const data = JSON.parse(event.data);
           switch (data.type) {
-            case 'update': {
-              const record = data.content;
-              if (this.recording) {
-                const msg = {
-                  type: 'updateSingle',
-                  data: record
-                };
-                console.info(JSON.stringify(msg));
-              }
-              break;
-            }
-
             case 'updateMultiple': {
               const records = data.content;
               if (this.recording) {
@@ -216,7 +221,10 @@
     mounted(){
       this.search = this.filter;
 
-      //获取端口号后插入iFrame
+      _getQrCode().then((res) => {
+        this.qrCode = res.data;
+      });
+
       _getInitData().then((perms) => {
         this.initWsServer(perms.data.wsPort);
         this.serverInfo = perms.data;

@@ -124,9 +124,16 @@ export const _getInitData =()=>{
   return axios.get("/api/getInitData");
 };
 
+
 export const _getlatestLog =()=>{
   return axios.get("/api/latestLog");
 };
+
+
+export const _getQrCode =()=>{
+  return axios.get("/api/getQrCode");
+};
+
 
 export const _getReqBody =(id)=>{
   return axios.get("/api/getReqBody",{
