@@ -8,7 +8,7 @@
         :on-icon-click="handleIconClick" :autofocus="true" @keyup.enter.native="handleIconClick">
       </el-input>
     </el-col>
-    <el-col style="padding-bottom: 20px;width: 300px;display: inline-block;float:right;">
+    <el-col style="padding-bottom: 20px;width: 400px;display: inline-block;float:right;">
       <el-popover
         ref="popover1"
         title="Proxy Running Info"
@@ -30,6 +30,10 @@
       <el-button v-popover:popover1 type="primary">服务器信息</el-button>
       <el-button type="success" @click="clearList">Clear</el-button>
       <el-button :type="btnType" @click="toggleReceive"> {{recording ? "Stop" : "Resume"}}</el-button>
+      <el-button type="primary" @click="Reload">Reload</el-button>
+    </el-col>
+    <el-col style="padding-bottom: 20px;width: 200px;display: inline-block;float: right;">
+      <p>仅显示 50 条记录</p>
     </el-col>
     <el-table
       :data="wsListFilter"
@@ -131,6 +135,14 @@
         this.SET_WS_LIST({
           type: "clear"
         })
+      },
+      Reload(){
+        _getlatestLog().then((res) => {
+          this.SET_WS_LIST({
+            type: "init",
+            data: res.data.result
+          })
+        });
       },
       toggleReceive(){
         this.SET_RECORDING();
