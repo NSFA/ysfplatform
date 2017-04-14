@@ -240,6 +240,7 @@
         });
       }
     },
+
     filters: {
       momentFormat(value){
         if (!value)return "--";

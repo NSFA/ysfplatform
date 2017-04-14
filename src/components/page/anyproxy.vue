@@ -3,29 +3,31 @@
     <div class="main_content">
       <div class="proxy_form">
         <el-form :model="proxy_form" :rules="rules" ref="proxy_form" label-width="200px">
-          <el-form-item label="代理端口" prop="port">
+          <el-form-item label="代理端口:" prop="port">
             {{proxy_form.port}}
-
           </el-form-item>
-          <el-form-item label="AnyProxy端口" prop="anyproxy_port">
-            {{proxy_form.anyproxy_port}}
-
+          <el-form-item label="ForceProxyHttps" prop="forceProxyHttps">
+          <el-switch on-text="开启" off-text="关闭" :width="60" v-model="proxy_form.forceProxyHttps" disabled></el-switch>
+          <span>需配CA,<a href="http://anyproxy.io/4.x/#配置帮助" target="_blank">详情</a></span>
           </el-form-item>
-          <el-form-item label="ws通信端口" prop="ws_port">
-            {{proxy_form.ws_port}}
-
-          </el-form-item>
-          <!--<el-form-item label="ForceProxyHttps" prop="forceProxyHttps">-->
-          <!--<el-switch on-text="开启" off-text="关闭" :width="60" v-model="proxy_form.forceProxyHttps" disabled></el-switch>-->
-          <!--<span>需配CA,详情：<a href="http://anyproxy.io/4.x/#配置帮助" target="_blank">AnyProxy设置</a>,暂时只开放拦截url设置</span>-->
-          <!--</el-form-item>-->
-          <el-form-item label="拦截url" prop="url">
+          <el-form-item label="拦截url:" prop="url">
             <el-input v-model="proxy_form.url"></el-input>
           </el-form-item>
-          <el-form-item label="限速值(默认不限速 kb/s)" prop="throttle">
-            <el-input v-model.number="proxy_form.throttle" type="number"></el-input>
+          <el-form-item label="限速(kb/s)">
+            <el-select
+              v-model="proxy_form.throttle"
+              allow-create
+              placeholder="No throttling">
+              <el-option
+                v-for="item in throttleOptions"
+                :label="item.label"
+                :value="item.value">
+              </el-option>
+            </el-select>
           </el-form-item>
-          <el-button type="primary" @click="submitForm('proxy_form')" :disabled="loading">保存</el-button>
+          <el-form-item>
+            <el-button type="primary" @click="submitForm('proxy_form')" :disabled="loading">保存</el-button>
+          </el-form-item>
         </el-form>
       </div>
     </div>
@@ -38,6 +40,44 @@
       return {
         loading: false,
         edit: false,
+        throttleOptions: [
+          {
+            label: 'No throttling',
+            value: 0
+          },
+          {
+            label: 'GPRS(50kb/s)',
+            value: 50
+          },
+          {
+            label: 'Regular 2G(250kb/s)',
+            value: 250
+          },
+          {
+            label: 'Good 2G(450kb/s)',
+            value: 450
+          },
+          {
+            label: 'Regular 3G(750kb/s)',
+            value: 750
+          },
+          {
+            label: 'Good 3G(1.5Mb/s)',
+            value: 1536
+          },
+          {
+            label: 'Regular 4G(4Mb/s)',
+            value: 4096
+          },
+          {
+            label: 'DSL(2Mb/s)',
+            value: 2048
+          },
+          {
+            label: 'WiFi(30Mb/s)',
+            value: 30720
+          },
+        ],
         proxy_form: {
           url: '',
           ws_port: null,

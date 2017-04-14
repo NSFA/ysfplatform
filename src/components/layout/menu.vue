@@ -65,7 +65,7 @@
       initTab(){
         const url = location.href.split("#")[1];
         _.forEach(this.routersMap, (item) => {
-          if (item.link === url) {
+          if (url.includes(item.link)) {
             this.SET_ACTIVE_TAB(item.id);
             return false;
           }
