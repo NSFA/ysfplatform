@@ -4,7 +4,8 @@ const state = {
   recording: true,
   wsInited: false,
   wsList:[],
-  filter:""
+  filter:"",
+  initList:false
 };
 
 export default state;

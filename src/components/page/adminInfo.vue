@@ -102,7 +102,7 @@
   </div>
 </template>
 <script>
-  import {_getInitData} from '../../javascript/getData'
+  import {_getInitData, _getlatestLog} from '../../javascript/getData'
   import {initWs} from '../../javascript/wsUtil'
   import moment from  'moment'
   import{mapState, mapMutations, mapGetters} from 'vuex'
@@ -114,14 +114,14 @@
       }
     },
     computed: {
-      ...mapState(["recording", "wsInited", "wsList"]),
+      ...mapState(["recording", "wsInited", "wsList", "initList"]),
       ...mapGetters(['wsListFilter']),
       btnType(){
         return this.recording ? "warning" : "primary"
       }
     },
     methods: {
-      ...mapMutations(['SET_WS', 'SET_WS_LIST', 'SET_WS_LIST_FILTER', 'SET_RECORDING']),
+      ...mapMutations(['SET_WS', 'SET_WS_LIST', 'SET_WS_LIST_FILTER', 'SET_RECORDING', 'SET_INIT_LIST']),
       clearList(){
         this.SET_WS_LIST({
           type: "clear"
@@ -181,7 +181,6 @@
         const data = res[res.length - 1], index = _.findIndex(this.wsList, function (o) {
           return o.id === data.id;
         });
-        console.log(data);
         if (index === -1) {
           this.SET_WS_LIST({
             type: "add",
@@ -202,6 +201,16 @@
         this.initWsServer(perms.data.wsPort);
         this.serverInfo = perms.data;
       });
+
+      if (!this.initList) {
+        _getlatestLog().then((res) => {
+          this.SET_INIT_LIST();
+          this.SET_WS_LIST({
+            type: "init",
+            data: res.data.result
+          })
+        });
+      }
     },
     filters: {
       momentFormat(value){

@@ -17,11 +17,17 @@ const mutations = {
   SET_RECORDING(state){
     state.recording = !state.recording;
   },
+  SET_INIT_LIST(state){
+    state.initList = true;
+  },
   SET_WS_LIST_FILTER(state, filter){
     state.filter = filter;
   },
   SET_WS_LIST(state, obj){
     switch (obj.type) {
+      case "init":
+        state.wsList = obj.data;
+        break;
       case "add":
         state.wsList.push(obj.data);
         break;

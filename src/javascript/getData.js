@@ -123,3 +123,7 @@ export const _setApiStatus = (data) => {
 export const _getInitData =()=>{
   return axios.get("/api/getInitData");
 };
+
+export const _getlatestLog =()=>{
+  return axios.get("/api/latestLog");
+};
