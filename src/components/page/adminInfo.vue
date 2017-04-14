@@ -37,11 +37,12 @@
     </el-col>
     <el-table
       :data="wsListFilter"
-      style="width: 100%" stripe border>
+      style="width: 100%" stripe border
+      :default-sort = "{prop: 'id', order: 'descending'}" >
       <el-table-column type="expand">
         <template scope="props">
           <el-form label-position="left" class="list-expand" labelWidth="150px">
-            <el-form-item label="id">
+            <el-form-item label="id" >
               <span>{{ props.row.id }}</span>
             </el-form-item>
             <el-form-item label="method">
@@ -87,7 +88,7 @@
       <el-table-column
         prop="id"
         label="#"
-        width="100">
+        width="100" sortable>
       </el-table-column>
       <el-table-column
         prop="method"
@@ -118,12 +119,12 @@
   export default{
     data(){
       return {
-        search: '',
-        serverInfo: {}
+        serverInfo: {},
+        search: ""
       }
     },
     computed: {
-      ...mapState(["recording", "wsInited", "wsList", "initList"]),
+      ...mapState(["recording", "wsInited", "wsList", "initList", 'filter']),
       ...mapGetters(['wsListFilter']),
       btnType(){
         return this.recording ? "warning" : "primary"
@@ -213,6 +214,8 @@
       },
     },
     mounted(){
+      this.search = this.filter;
+
       //获取端口号后插入iFrame
       _getInitData().then((perms) => {
         this.initWsServer(perms.data.wsPort);
