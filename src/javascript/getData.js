@@ -115,26 +115,49 @@ export const _getReqApiList = () => {
   return axios.get("/api/getReqApiList");
 };
 
-
+/**
+ * 设置API开关
+ * @param data
+ * @returns {AxiosPromise}
+ * @private
+ */
 export const _setApiStatus = (data) => {
   return axios.post("/api/setApiStatus",data);
 };
 
+/**
+ * 获取初始服务器数据
+ * @returns {AxiosPromise}
+ * @private
+ */
 export const _getInitData =()=>{
   return axios.get("/api/getInitData");
 };
 
-
+/**
+ * 获取最新的消息
+ * @returns {AxiosPromise}
+ * @private
+ */
 export const _getlatestLog =()=>{
   return axios.get("/api/latestLog");
 };
 
-
+/**
+ * 获取二维码信息
+ * @returns {AxiosPromise}
+ * @private
+ */
 export const _getQrCode =()=>{
   return axios.get("/api/getQrCode");
 };
 
-
+/**
+ * 获取请求的消息主体
+ * @param id
+ * @returns {AxiosPromise}
+ * @private
+ */
 export const _getReqBody =(id)=>{
   return axios.get("/api/getReqBody",{
     params: {

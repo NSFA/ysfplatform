@@ -17,7 +17,6 @@
     </ul>
   </div>
 </template>
-
 <script>
   import {mapState, mapMutations} from 'vuex';
   import {_getCookie}  from "../../javascript/util";

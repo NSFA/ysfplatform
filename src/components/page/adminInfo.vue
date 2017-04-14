@@ -149,11 +149,18 @@
     },
     methods: {
       ...mapMutations(['SET_WS', 'SET_WS_LIST', 'SET_WS_LIST_FILTER', 'SET_RECORDING', 'SET_INIT_LIST']),
+      /**
+       * 清空列表
+       */
       clearList(){
         this.SET_WS_LIST({
           type: "clear"
         })
       },
+      /**
+       * 重新加载
+       * @constructor
+       */
       Reload(){
         _getlatestLog().then((res) => {
           this.SET_WS_LIST({
@@ -162,29 +169,29 @@
           })
         });
       },
+      /**
+       * 切换监控开关
+       */
       toggleReceive(){
         this.SET_RECORDING();
       },
+      /**
+       * 筛选
+       */
       handleIconClick(){
         this.SET_WS_LIST_FILTER(this.search)
       },
+      /**
+       * webSocket消息回调
+       * @param event
+       */
       onWsMessage(event) {
         try {
           const data = JSON.parse(event.data);
-          switch (data.type) {
-            case 'updateMultiple': {
-              const records = data.content;
-              if (this.recording) {
-                const msg = {
-                  type: 'updateMultiple',
-                  data: records
-                };
-                this.filterData(records);
-              }
-              break;
-            }
-            default : {
-              break;
+          if (data.type === 'updateMultiple') {
+            const records = data.content;
+            if (this.recording) {
+              this.filterData(records);
             }
           }
         } catch (error) {
@@ -192,6 +199,10 @@
           console.error('Failed to parse the websocket data with message: ', event.data);
         }
       },
+      /**
+       * 初始化Ws对象
+       * @param wsPort
+       */
       initWsServer(wsPort) {
         if (!wsPort || this.wsInited) {
           return;
@@ -200,6 +211,10 @@
         const wsClient = initWs(wsPort);
         wsClient.onmessage = this.onWsMessage;
       },
+      /**
+       * 筛选Ws信息
+       * @param res
+       */
       filterData(res){
         const data = res[res.length - 1], index = _.findIndex(this.wsList, function (o) {
           return o.id === data.id;
