@@ -127,3 +127,13 @@ export const _getInitData =()=>{
 export const _getlatestLog =()=>{
   return axios.get("/api/latestLog");
 };
+
+export const _getReqBody =(id)=>{
+  return axios.get("/api/getReqBody",{
+    params: {
+      id: id
+    }
+  });
+};
+
+

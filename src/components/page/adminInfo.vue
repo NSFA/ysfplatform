@@ -91,18 +91,23 @@
         width="180">
       </el-table-column>
       <el-table-column
+        prop="statusCode"
+        label="Status"
+        width="180">
+      </el-table-column>
+      <el-table-column
         prop="host"
-        label="Host">
+        label="Host" :show-overflow-tooltip="true">
       </el-table-column>
       <el-table-column
         prop="path"
-        label="PATH">
+        label="PATH" :show-overflow-tooltip="true">
       </el-table-column>
     </el-table>
   </div>
 </template>
 <script>
-  import {_getInitData, _getlatestLog} from '../../javascript/getData'
+  import {_getInitData, _getlatestLog, _getReqBody} from '../../javascript/getData'
   import {initWs} from '../../javascript/wsUtil'
   import moment from  'moment'
   import{mapState, mapMutations, mapGetters} from 'vuex'
