@@ -6,10 +6,11 @@
           <el-form-item label="代理端口:" prop="port">
             {{proxy_form.port}}
           </el-form-item>
-          <el-form-item label="ForceProxyHttps" prop="forceProxyHttps">
-          <el-switch on-text="开启" off-text="关闭" :width="60" v-model="proxy_form.forceProxyHttps" disabled></el-switch>
-          <span>需配CA,<a href="http://anyproxy.io/4.x/#配置帮助" target="_blank">详情</a></span>
-          </el-form-item>
+          <!--HTTPS暂时没必要-->
+          <!--<el-form-item label="ForceProxyHttps" prop="forceProxyHttps">-->
+          <!--<el-switch on-text="开启" off-text="关闭" :width="60" v-model="proxy_form.forceProxyHttps" disabled></el-switch>-->
+          <!--<span>需配CA,<a href="http://anyproxy.io/4.x/#配置帮助" target="_blank">详情</a></span>-->
+          <!--</el-form-item>-->
           <el-form-item label="拦截url:" prop="url">
             <el-input v-model="proxy_form.url"></el-input>
           </el-form-item>

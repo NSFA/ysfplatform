@@ -22,19 +22,16 @@
               <span>{{x}}</span>
             </el-form-item>
           </template>
-          <el-form-item label="webSocket">
-            <span>{{serverInfo.wsPort}}</span>
-          </el-form-item>
         </el-form>
       </el-popover>
       <el-popover
         ref="popover2"
-        title="证书信息"
+        title="HTTPS 证书信息"
         trigger="hover">
         <div style="text-align: center">
           <h4>手机扫描下载</h4>
           <div v-html="qrCode.qrImgDom"></div>
-          <p>证书安装情况：{{qrCode.isRootCAFileExists ? "已安装" : "未安装"}}</p>
+          <p>本机证书安装情况：{{qrCode.isRootCAFileExists ? "已安装" : "未安装"}}</p>
           <a :href="qrCode.url" download>
             <el-button>点击下载</el-button>
           </a>
