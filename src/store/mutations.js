@@ -1,41 +1,50 @@
 const mutations = {
-  SET_ACTIVE_TAB(state, tab){
-    state.activeTab = tab;
+
+  SET_ACTIVE_TAB(state, payload){
+    state.activeTab = payload;
   },
-  SET_DATA_ACTIVE_TAB(state, tab){
-    state.hubActiveTab = tab;
+
+  SET_DATA_ACTIVE_TAB(state, payload){
+    state.hubActiveTab = payload;
   },
-  SET_PROXY_STATE(state, proxy){
-    state.proxy_switch = proxy;
+
+  SET_PROXY_STATE(state, payload){
+    state.proxy_switch = payload;
   },
-  SET_INIT_INFO(state, info){
-    _.extend(state, info);
+
+  SET_INIT_INFO(state, payload){
+    _.extend(state, payload);
   },
-  SET_WS(state, info){
-    state.wsInited = info;
+
+  SET_WS(state, payload){
+    state.wsInited = payload;
   },
+
   SET_RECORDING(state){
     state.recording = !state.recording;
   },
+
   SET_INIT_LIST(state){
     state.initList = true;
   },
-  SET_WS_LIST_FILTER(state, filter){
-    state.filter = filter;
+
+  SET_WS_LIST_FILTER(state, payload){
+    state.filter = payload;
   },
-  SET_WS_LIST(state, obj){
-    switch (obj.type) {
+
+  SET_WS_LIST(state, payload){
+    switch (payload.type) {
       case "init":
-        state.wsList = obj.data;
+        state.wsList = payload.data;
         break;
       case "add":
-        state.wsList.push(obj.data);
+        state.wsList.push(payload.data);
         break;
       case "clear":
         state.wsList = [];
         break;
       case "change":
-        _.extend(state.wsList[obj.index], obj.data);
+        _.extend(state.wsList[payload.index], payload.data);
         break;
       default:
         break;

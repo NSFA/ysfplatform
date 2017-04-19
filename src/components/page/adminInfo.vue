@@ -4,8 +4,8 @@
       <el-input
         placeholder="搜索"
         icon="search"
-        v-model="search"
-        :on-icon-click="handleIconClick" :autofocus="true" @keyup.enter.native="handleIconClick">
+        v-model="filter"
+        :autofocus="true">
       </el-input>
     </el-col>
     <el-col style="padding-bottom: 20px;width: 500px;display: inline-block;float:right;">
@@ -31,7 +31,6 @@
         <div style="text-align: center">
           <h4>手机扫描下载</h4>
           <div v-html="qrCode.qrImgDom"></div>
-          <p>本机证书安装情况：{{qrCode.isRootCAFileExists ? "已安装" : "未安装"}}</p>
           <a :href="qrCode.url" download>
             <el-button>点击下载</el-button>
           </a>
@@ -40,8 +39,8 @@
       <el-button v-popover:popover2 type="primary">获取证书</el-button>
       <el-button v-popover:popover1 type="primary">服务器信息</el-button>
       <el-button type="success" @click="clearList">Clear</el-button>
-      <el-button :type="btnType" @click="toggleReceive"> {{recording ? "Stop" : "Resume"}}</el-button>
-      <el-button type="primary" @click="Reload">Reload</el-button>
+      <el-button :type="btnType" @click="SET_RECORDING"> {{recording ? "Stop" : "Resume"}}</el-button>
+      <el-button type="primary" @click="reloadList">Reload</el-button>
     </el-col>
     <el-table
       :data="wsListFilter"
@@ -128,74 +127,35 @@
   import {_getInitData, _getlatestLog, _getReqBody, _getQrCode} from '../../javascript/getData'
   import {initWs} from '../../javascript/wsUtil'
   import moment from  'moment'
-  import{mapState, mapMutations, mapGetters} from 'vuex'
+  import{mapState, mapMutations, mapGetters, mapActions} from 'vuex'
   export default{
     data(){
       return {
         serverInfo: {},
-        search: "",
         qrCode: {}
       }
     },
     computed: {
-      ...mapState(["recording", "wsInited", "wsList", "initList", 'filter']),
+      filter: {
+        get () {
+          return this.$store.state.filter
+        },
+        set (value) {
+          this.$store.commit('SET_WS_LIST_FILTER', value)
+        }
+      },
+      ...mapState(["recording", "wsInited", "initList"]),
       ...mapGetters(['wsListFilter']),
       btnType(){
         return this.recording ? "warning" : "primary"
       }
     },
+
     methods: {
       ...mapMutations(['SET_WS', 'SET_WS_LIST', 'SET_WS_LIST_FILTER', 'SET_RECORDING', 'SET_INIT_LIST']),
-      /**
-       * 清空列表
-       */
-      clearList(){
-        this.SET_WS_LIST({
-          type: "clear"
-        })
-      },
-      /**
-       * 重新加载
-       * @constructor
-       */
-      Reload(){
-        _getlatestLog().then((res) => {
-          this.SET_WS_LIST({
-            type: "init",
-            data: res.data.result
-          })
-        });
-      },
-      /**
-       * 切换监控开关
-       */
-      toggleReceive(){
-        this.SET_RECORDING();
-      },
-      /**
-       * 筛选
-       */
-      handleIconClick(){
-        this.SET_WS_LIST_FILTER(this.search)
-      },
-      /**
-       * webSocket消息回调
-       * @param event
-       */
-      onWsMessage(event) {
-        try {
-          const data = JSON.parse(event.data);
-          if (data.type === 'updateMultiple') {
-            const records = data.content;
-            if (this.recording) {
-              this.filterData(records);
-            }
-          }
-        } catch (error) {
-          console.error(error);
-          console.error('Failed to parse the websocket data with message: ', event.data);
-        }
-      },
+
+      ...mapActions(['reloadList', 'clearList', 'onWsMessage']),
+
       /**
        * 初始化Ws对象
        * @param wsPort
@@ -208,31 +168,9 @@
         const wsClient = initWs(wsPort);
         wsClient.onmessage = this.onWsMessage;
       },
-      /**
-       * 筛选Ws信息
-       * @param res
-       */
-      filterData(res){
-        const data = res[res.length - 1], index = _.findIndex(this.wsList, function (o) {
-          return o.id === data.id;
-        });
-        if (index === -1) {
-          this.SET_WS_LIST({
-            type: "add",
-            data: data
-          })
-        } else {
-          this.SET_WS_LIST({
-            type: "change",
-            data: data,
-            index: index
-          });
-        }
-      },
+
     },
     mounted(){
-      this.search = this.filter;
-
       _getQrCode().then((res) => {
         this.qrCode = res.data;
       });

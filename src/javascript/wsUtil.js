@@ -1,5 +1,5 @@
 export function initWs(wsPort = 8003, key = '') {
-  if(!WebSocket){
+  if (!WebSocket) {
     throw (new Error('WebSocket is not supportted on this browser'));
   }
 //59.111.99.122
@@ -16,6 +16,14 @@ export function initWs(wsPort = 8003, key = '') {
   wsClient.onclose = (e) => {
     console.info('websocket closed: ', e);
   };
+
+  //5分钟发送一条垃圾信息
+  setInterval(function () {
+
+    wsClient.send('pump...');
+    console.info("pump...")
+
+  }, 1000 * 60 * 5);
 
   return wsClient;
 }
