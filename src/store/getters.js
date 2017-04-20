@@ -5,10 +5,10 @@ const getters = {
       return state.wsList.slice(-50).reverse();
     }
 
-    const filterList = state.wsList.filter(it => it.method.toLowerCase() === state.filter
+    const filterList = state.wsList.filter(it => it.method === state.filter
     || it.protocol.toLowerCase() === state.filter
-    || it.host.includes(state.filter)
-    || it.path.includes(state.filter)
+    || it.host.indexOf(state.filter) > -1
+    || it.path.indexOf(state.filter) > -1
     || it.statusCode == state.filter
     || it.id == state.filter);
 
