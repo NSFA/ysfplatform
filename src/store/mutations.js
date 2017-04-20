@@ -49,6 +49,12 @@ const mutations = {
       default:
         break;
     }
+  },
+
+  SET_FILTER(state, payload){
+    state.filterSet = {
+      ...state.filterSet, ...payload
+    }
   }
 };
 

@@ -5,7 +5,12 @@ const state = {
   wsInited: false,
   wsList:[],
   filter:"",
-  initList:false
+  initList:false,
+  filterSet:{
+    currentPage:1,
+    pageSize:20,
+    total:0
+  }
 };
 
 export default state;

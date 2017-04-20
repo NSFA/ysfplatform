@@ -44,8 +44,7 @@
     </el-col>
     <el-table
       :data="wsListFilter"
-      style="width: 100%" stripe border
-      :default-sort="{prop: 'id', order: 'descending'}">
+      style="width: 100%" stripe border>
       <el-table-column type="expand">
         <template scope="props">
           <el-form label-position="left" class="list-expand" labelWidth="150px">
@@ -95,7 +94,7 @@
       <el-table-column
         prop="id"
         label="#"
-        width="100" sortable>
+        width="100">
       </el-table-column>
       <el-table-column
         prop="protocol"
@@ -121,6 +120,18 @@
         label="PATH" :show-overflow-tooltip="true">
       </el-table-column>
     </el-table>
+    <template v-if="filter.length">
+      <el-pagination
+        style="margin-top: 20px;float: right"
+        @size-change="handleSizeChange"
+        @current-change="handleCurrentChange"
+        :current-page="filterSet.currentPage"
+        :page-sizes="[20, 50, 100]"
+        :page-size="filterSet.pageSize"
+        layout="total, sizes, prev, pager, next"
+        :total="filterSet.total">
+      </el-pagination>
+    </template>
   </div>
 </template>
 <script>
@@ -144,7 +155,7 @@
           this.$store.commit('SET_WS_LIST_FILTER', value)
         }
       },
-      ...mapState(["recording", "wsInited", "initList"]),
+      ...mapState(["recording", "wsInited", "initList","filterSet"]),
       ...mapGetters(['wsListFilter']),
       btnType(){
         return this.recording ? "warning" : "primary"
@@ -152,10 +163,20 @@
     },
 
     methods: {
-      ...mapMutations(['SET_WS', 'SET_WS_LIST', 'SET_WS_LIST_FILTER', 'SET_RECORDING', 'SET_INIT_LIST']),
+      ...mapMutations(['SET_WS', 'SET_WS_LIST', 'SET_WS_LIST_FILTER', 'SET_RECORDING', 'SET_INIT_LIST','SET_FILTER']),
 
       ...mapActions(['reloadList', 'clearList', 'onWsMessage']),
 
+      handleSizeChange(val){
+        this.SET_FILTER({
+          pageSize:val
+        })
+      },
+      handleCurrentChange(val){
+          this.SET_FILTER({
+            currentPage:val
+          })
+      },
       /**
        * 初始化Ws对象
        * @param wsPort
