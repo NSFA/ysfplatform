@@ -16,11 +16,21 @@
         List: [
           {
             version: "v0.1",
-            date:"2017年4月21日",
+            date: "2017年4月11日",
+            content: [
+              "简单支持响应拦截",
+              "通过iFrame支持监控",
+              "添加使用简介模块"
+            ]
+          },
+          {
+            version: "v0.2",
+            date: "2017年4月21日",
             content: [
               "支持访问限速功能",
               "支持请求、响应拦截",
-              "支持代理信息监控"
+              "支持代理信息监控",
+              "添加更新记录模块"
             ]
           },
         ]
@@ -29,15 +39,15 @@
   }
 </script>
 <style lang="scss">
-  .update-list{
+  .update-list {
     padding: 60px;
-    h2{
+    h2 {
       font-weight: normal;
       font-size: 20px;
       line-height: 40px;
       color: #3c3e4b;
     }
-    p,li{
+    p, li {
       white-space: nowrap;
       font-size: 14px;
       line-height: 30px;
