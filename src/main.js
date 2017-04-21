@@ -7,6 +7,7 @@ import store from './store/index'
 import _ from 'lodash'
 import ElementUI from 'element-ui'
 import 'element-ui/lib/theme-default/index.css'
+import 'jsoneditor/dist/jsoneditor.css'
 import 'normalize.css'
 import './style/index.scss'
 

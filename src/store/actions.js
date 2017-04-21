@@ -2,6 +2,7 @@ import {_getlatestLog} from '../javascript/getData'
 
 const actions = {
 
+  //重新加载监控列表
   reloadList({commit}){
     _getlatestLog().then((res) => {
       commit('SET_WS_LIST', {
@@ -11,12 +12,14 @@ const actions = {
     });
   },
 
+  //清空监控列表
   clearList({commit}){
     commit('SET_WS_LIST', {
       type: "clear",
     });
   },
 
+  //ws消息处理
   onWsMessage({commit,state}, event) {
     try {
       const data = JSON.parse(event.data);

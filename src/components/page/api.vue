@@ -21,11 +21,11 @@
     data(){
       return {
         routerMap: [{
-          url: '/dataHub/reqList',
+          url: '/api/reqList',
           index: '1',
           name: '请求拦截'
         }, {
-          url: '/dataHub/apiList',
+          url: '/api/resList',
           index: '2',
           name: '响应拦截'
         }]

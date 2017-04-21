@@ -17,7 +17,6 @@
           <el-form-item label="限速(kb/s)">
             <el-select
               v-model="proxy_form.throttle"
-              allow-create
               placeholder="No throttling">
               <el-option
                 v-for="item in throttleOptions"
@@ -45,6 +44,10 @@
           {
             label: 'No throttling',
             value: 0
+          },
+          {
+            label: 'Very Slow(5kb/s)',
+            value: 5
           },
           {
             label: 'GPRS(50kb/s)',

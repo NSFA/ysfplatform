@@ -8,29 +8,6 @@
       </el-dialog>
     </div>
     <el-table :data="tableData" v-loading="loading" element-loading-text="拼命加载中" border>
-      <el-table-column type="expand">
-        <template scope="props">
-          <el-form label-position="left" inline class="list-expand">
-            <el-form-item label="API:">
-              <span>{{ props.row.name }}</span>
-            </el-form-item>
-            <el-form-item label="创建时间:">
-              <span>{{ props.row.date }}</span>
-            </el-form-item>
-            <el-form-item label="更新时间:">
-              <span>{{ props.row.update }}</span>
-            </el-form-item>
-            <el-form-item label="状态:">
-              <span>{{ props.row.status ? '开启' : '关闭' }}</span>
-            </el-form-item>
-            <template v-for="(value,key,index) in props.row.reqArr">
-              <el-form-item :label="props.row.templateOptions[index].label">
-                <span>{{value.reqData}}</span>
-              </el-form-item>
-            </template>
-          </el-form>
-        </template>
-      </el-table-column>
       <el-table-column prop="date" label="创建日期" sortable width="200"></el-table-column>
       <el-table-column prop="update" label="更新时间" sortable width="200"></el-table-column>
       <el-table-column prop="name" sortable label="请求拦截API">

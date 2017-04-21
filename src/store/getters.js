@@ -2,11 +2,12 @@ const getters = {
   wsListFilter: state => {
     //仅展示50条消息
     if (!state.filter) {
-      return state.wsList.slice(-50).reverse();
+      return state.wsList.slice(-20).reverse();
     }
 
+    //筛选，避免渲染卡顿，做个假分页 :)
     const filterList = state.wsList.filter(it => it.method === state.filter
-    || it.protocol.toLowerCase() === state.filter
+    || it.protocol === state.filter
     || it.host.indexOf(state.filter) > -1
     || it.path.indexOf(state.filter) > -1
     || it.statusCode == state.filter

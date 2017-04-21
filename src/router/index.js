@@ -4,10 +4,11 @@ import Router from 'vue-router'
 //webpack 按需加载
 const Login = r => require.ensure([], () => r(require('../components/page/Login')), 'Login');
 const Main = r => require.ensure([], () => r(require('../components/page/Main')), 'Main');
-const anyproxy = r => require.ensure([], () => r(require('../components/page/anyproxy')), 'anyproxy');
-const dataHub = r => require.ensure([], () => r(require('../components/page/dataHub')), 'dataHub');
-const adminInfo = r => require.ensure([], () => r(require('../components/page/adminInfo')), 'adminInfo');
-const apiList = r => require.ensure([], () => r(require('../components/list/apiList')), 'apiList');
+const proxy = r => require.ensure([], () => r(require('../components/page/proxy')), 'proxy');
+const api = r => require.ensure([], () => r(require('../components/page/api')), 'api');
+const monitoring = r => require.ensure([], () => r(require('../components/page/monitoring')), 'monitoring');
+const updateRecord = r => require.ensure([], () => r(require('../components/page/updateRecord')), 'updateRecord');
+const resList = r => require.ensure([], () => r(require('../components/list/resList')), 'resList');
 const reqList = r => require.ensure([], () => r(require('../components/list/reqList')), 'reqList');
 const guide = r => require.ensure([], () => r(require('../components/page/guide')), 'guide');
 
@@ -27,27 +28,27 @@ export default new Router({
       children: [
         {
           path: '',
-          redirect: 'anyproxy'
+          redirect: 'proxy'
         },
         {
-          path: 'adminInfo',
-          component: adminInfo
+          path: 'monitoring',
+          component: monitoring
         },
         {
-          path: 'anyproxy',
-          component: anyproxy
+          path: 'proxy',
+          component: proxy
         },
         {
-          path: 'dataHub',
-          component: dataHub,
+          path: 'api',
+          component: api,
           children: [
             {
               path: '',
               redirect: 'reqList'
             },
             {
-              path: 'apiList',
-              component: apiList,
+              path: 'resList',
+              component: resList,
             },
             {
               path: 'reqList',
@@ -58,6 +59,10 @@ export default new Router({
         {
           path: 'guide',
           component: guide
+        },
+        {
+          path:'updateRecord',
+          component: updateRecord
         }
       ]
     }

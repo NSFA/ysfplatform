@@ -40,7 +40,7 @@
       <el-button v-popover:popover1 type="primary">服务器信息</el-button>
       <el-button type="success" @click="clearList">Clear</el-button>
       <el-button :type="btnType" @click="SET_RECORDING"> {{recording ? "Stop" : "Resume"}}</el-button>
-      <el-button type="primary" @click="reloadList">Reload</el-button>
+      <el-button type="info" @click="reloadList">Reload</el-button>
     </el-col>
     <el-table
       :data="wsListFilter"
@@ -97,23 +97,30 @@
         width="100">
       </el-table-column>
       <el-table-column
+        prop="timeZh"
+        label="时间"
+        width="200">
+      </el-table-column>
+      <el-table-column
         prop="protocol"
-        label="Protocol"
+        label="协议"
         width="100">
       </el-table-column>
       <el-table-column
         prop="method"
         label="Method"
-        width="180">
+        width="100">
       </el-table-column>
       <el-table-column
         prop="statusCode"
         label="Status"
-        width="180">
+        width="100">
       </el-table-column>
       <el-table-column
         prop="host"
-        label="Host" :show-overflow-tooltip="true">
+        label="Host"
+        width="200"
+        :show-overflow-tooltip="true">
       </el-table-column>
       <el-table-column
         prop="path"
@@ -142,11 +149,12 @@
   export default{
     data(){
       return {
-        serverInfo: {},
-        qrCode: {}
+        serverInfo: {}, //服务器信息
+        qrCode: {} //二维码信息
       }
     },
     computed: {
+      //筛选字符串
       filter: {
         get () {
           return this.$store.state.filter
@@ -155,28 +163,42 @@
           this.$store.commit('SET_WS_LIST_FILTER', value)
         }
       },
-      ...mapState(["recording", "wsInited", "initList","filterSet"]),
-      ...mapGetters(['wsListFilter']),
+
+      //暂停开关样式
       btnType(){
         return this.recording ? "warning" : "primary"
-      }
+      },
+
+      ...mapState(["recording", "wsInited", "initList", "filterSet"]),
+
+      ...mapGetters(['wsListFilter']),
     },
 
     methods: {
-      ...mapMutations(['SET_WS', 'SET_WS_LIST', 'SET_WS_LIST_FILTER', 'SET_RECORDING', 'SET_INIT_LIST','SET_FILTER']),
+
+      ...mapMutations(['SET_WS', 'SET_WS_LIST', 'SET_WS_LIST_FILTER', 'SET_RECORDING', 'SET_INIT_LIST', 'SET_FILTER']),
 
       ...mapActions(['reloadList', 'clearList', 'onWsMessage']),
 
+
+      /**
+       * 筛选时，单页条数改变
+       */
       handleSizeChange(val){
         this.SET_FILTER({
-          pageSize:val
+          pageSize: val
         })
       },
+
+      /**
+       *筛选时，当前页数改变
+       */
       handleCurrentChange(val){
-          this.SET_FILTER({
-            currentPage:val
-          })
+        this.SET_FILTER({
+          currentPage: val
+        })
       },
+
       /**
        * 初始化Ws对象
        * @param wsPort
@@ -185,29 +207,45 @@
         if (!wsPort || this.wsInited) {
           return;
         }
-        this.SET_WS(true);
+
         const wsClient = initWs(wsPort);
+        this.SET_WS(true);
+
         wsClient.onmessage = this.onWsMessage;
       },
 
     },
     mounted(){
+
+      /**
+       * 获取https证书二维码
+       */
       _getQrCode().then((res) => {
         this.qrCode = res.data;
       });
 
+
+      /**
+       * 获取服务器初始化信息
+       */
       _getInitData().then((perms) => {
         this.initWsServer(perms.data.wsPort);
         this.serverInfo = perms.data;
       });
 
+      /**
+       * 如果没有初始化过，
+       * 拉取记录列表
+       */
       if (!this.initList) {
         _getlatestLog().then((res) => {
-          this.SET_INIT_LIST();
+
+          this.SET_INIT_LIST(true);
           this.SET_WS_LIST({
             type: "init",
             data: res.data.result
           })
+
         });
       }
     },
